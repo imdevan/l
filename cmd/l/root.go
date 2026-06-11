@@ -22,8 +22,29 @@ var (
 )
 
 type rootOptions struct {
-	configPath string
+	configPath  string
 	showVersion bool
+	sortByM     bool // -m modified
+	sortByT     bool // -t type
+	sortByS     bool // -s size
+	sortByN     bool // -n name (wins)
+	reverse     bool // -r
+}
+
+func (o *rootOptions) sortKey() workflow.SortKey {
+	// -n wins if multiple flags present
+	switch {
+	case o.sortByN:
+		return workflow.SortName
+	case o.sortByM:
+		return workflow.SortModified
+	case o.sortByS:
+		return workflow.SortSize
+	case o.sortByT:
+		return workflow.SortType
+	default:
+		return workflow.SortName
+	}
 }
 
 var rootCmd = newRootCmd()
@@ -49,6 +70,11 @@ func newRootCmd() *cobra.Command {
 
 	cmd.Flags().StringVarP(&opts.configPath, "config", "c", "", "config file path")
 	cmd.Flags().BoolVarP(&opts.showVersion, "version", "v", false, "print version information")
+	cmd.Flags().BoolVarP(&opts.sortByM, "sort-modified", "m", false, "sort by modified (newest first)")
+	cmd.Flags().BoolVarP(&opts.sortByT, "sort-type", "t", false, "sort by type (dirs first)")
+	cmd.Flags().BoolVarP(&opts.sortByS, "sort-size", "s", false, "sort by size (largest first)")
+	cmd.Flags().BoolVarP(&opts.sortByN, "sort-name", "n", false, "sort by name (wins over other sort flags)")
+	cmd.Flags().BoolVarP(&opts.reverse, "reverse", "r", false, "reverse sort order")
 
 	cmd.AddCommand(newConfigCmd())
 	cmd.AddCommand(newCompletionCmd())
@@ -90,6 +116,8 @@ func runListing(_ *cobra.Command, opts *rootOptions, _ []string) error {
 	if err != nil {
 		return err
 	}
+
+	workflow.SortEntries(entries, opts.sortKey(), opts.reverse)
 
 	theme := ui.ThemeFromConfig(cfg)
 	fmt.Println(ui.RenderTable(entries, theme, ui.DefaultTableOptions()))

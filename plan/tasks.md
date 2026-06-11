@@ -51,12 +51,12 @@ file_size = 08 # overrides other file colors if present
 
 ## Feature 2: Sorting
 
-- [ ] 2.1 Default sort by name (case-insensitive, natural order)
-- [ ] 2.2 `-m` flag: sort by modified (default descending)
-- [ ] 2.3 `-t` flag: sort by type (dirs first, then files)
-- [ ] 2.4 `-s` flag: sort by size (default descending)
-- [ ] 2.5 `-n` flag: sort by name (explicit; wins over other sort flags)
-- [ ] 2.6 `-r` flag: reverse sort order
+- [x] 2.1 Default sort by name (case-insensitive, natural order)
+- [x] 2.2 `-m` flag: sort by modified (default descending)
+- [x] 2.3 `-t` flag: sort by type (dirs first, then files)
+- [x] 2.4 `-s` flag: sort by size (default descending)
+- [x] 2.5 `-n` flag: sort by name (explicit; wins over other sort flags)
+- [x] 2.6 `-r` flag: reverse sort order
   - notes: `-r` toggles the default direction, it does not force ascending. e.g. `-m` is desc by default; `-m -r` becomes ascending.
 
 ## Feature 3: Filtering & navigation
@@ -89,6 +89,7 @@ file_size = 08 # overrides other file colors if present
 - [ ] 5.7 `always_show_bottom_header` — always repeat header at bottom
 - [ ] 5.8 `show_permissions` — show permissions column when enabled
 - [ ] 5.9 `empty_dir_message` — message to show when directory is empty
+- [ ] 5.10 `directories_first` — show directories before files
 
 ### config booleans:
 show_header=true
