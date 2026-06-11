@@ -1,6 +1,10 @@
 # Repository Guidelines
 
 
+  no magic numbers! all styles should be routed
+  through config with fall backs to default
+  values. fall backs should be defined at config
+  read time, not inline.
 ## Project Structure & Module Organization
 - `cmd/` holds the Cobra CLI entrypoint and subcommands (e.g., `main.go`, `root.go`).
 - `internal/` contains app wiring, workflows, domain models, adapters, and utilities.

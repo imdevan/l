@@ -21,6 +21,24 @@ type Config struct {
 	Border               string `toml:"border"`
 	InteractiveDefault   bool   `toml:"interactive_default"`
 	ListSpacing          string `toml:"list_spacing"`
+
+	// Listing colors
+	DirColor  string `toml:"dir_color"`
+	FileColor string `toml:"file_color"`
+
+	// Modified age colors
+	ModNewerColor string `toml:"mod_newer_color"`
+	ModNewColor   string `toml:"mod_new_color"`
+	ModOldColor   string `toml:"mod_old_color"`
+	ModOlderColor string `toml:"mod_older_color"`
+	ModifiedColor string `toml:"modified_color"` // overrides all mod colors when set
+
+	// File size colors
+	FileSm    string `toml:"file_sm"`
+	FileMd    string `toml:"file_md"`
+	FileLg    string `toml:"file_lg"`
+	FileXl    string `toml:"file_xl"`
+	FileSize  string `toml:"file_size"` // overrides all size colors when set
 }
 
 // DefaultConfig returns the default configuration values.
@@ -40,6 +58,19 @@ func DefaultConfig() Config {
 		Border:               "08",
 		InteractiveDefault:   true,
 		ListSpacing:          "space",
+
+		DirColor:  "12",
+		FileColor: "07",
+
+		ModNewerColor: "10",
+		ModNewColor:   "02",
+		ModOldColor:   "03",
+		ModOlderColor: "04",
+
+		FileSm: "10",
+		FileMd: "02",
+		FileLg: "03",
+		FileXl: "04",
 	}
 }
 

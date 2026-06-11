@@ -20,10 +20,40 @@ type Theme struct {
 	Flags                lipgloss.Color
 	Muted                lipgloss.Color
 	Border               lipgloss.Color
+
+	// Listing colors
+	DirColor  lipgloss.Color
+	FileColor lipgloss.Color
+
+	// Modified age colors
+	ModNewer lipgloss.Color
+	ModNew   lipgloss.Color
+	ModOld   lipgloss.Color
+	ModOlder lipgloss.Color
+
+	// File size colors
+	FileSm lipgloss.Color
+	FileMd lipgloss.Color
+	FileLg lipgloss.Color
+	FileXl lipgloss.Color
 }
 
 // ThemeFromConfig builds a theme with safe fallbacks.
 func ThemeFromConfig(cfg domain.Config) Theme {
+	// mod colors: modified_color overrides individual bands when set
+	modOverride := strings.TrimSpace(cfg.ModifiedColor)
+	modNewer := resolveColor(resolveFallback(modOverride, cfg.ModNewerColor), "10")
+	modNew   := resolveColor(resolveFallback(modOverride, cfg.ModNewColor), "02")
+	modOld   := resolveColor(resolveFallback(modOverride, cfg.ModOldColor), "03")
+	modOlder := resolveColor(resolveFallback(modOverride, cfg.ModOlderColor), "04")
+
+	// size colors: file_size overrides individual bands when set
+	sizeOverride := strings.TrimSpace(cfg.FileSize)
+	fileSm := resolveColor(resolveFallback(sizeOverride, cfg.FileSm), "10")
+	fileMd := resolveColor(resolveFallback(sizeOverride, cfg.FileMd), "02")
+	fileLg := resolveColor(resolveFallback(sizeOverride, cfg.FileLg), "03")
+	fileXl := resolveColor(resolveFallback(sizeOverride, cfg.FileXl), "04")
+
 	return Theme{
 		Headings:             resolveColor(cfg.Headings, "15"),
 		Primary:              resolveColor(cfg.Primary, "02"),
@@ -35,6 +65,19 @@ func ThemeFromConfig(cfg domain.Config) Theme {
 		Flags:                resolveColor(cfg.Flags, "12"),
 		Muted:                resolveColor(cfg.Muted, "08"),
 		Border:               resolveColor(cfg.Border, "08"),
+
+		DirColor:  resolveColor(resolveFallback(cfg.DirColor, cfg.Primary), "12"),
+		FileColor: resolveColor(resolveFallback(cfg.FileColor, cfg.Text), "07"),
+
+		ModNewer: modNewer,
+		ModNew:   modNew,
+		ModOld:   modOld,
+		ModOlder: modOlder,
+
+		FileSm: fileSm,
+		FileMd: fileMd,
+		FileLg: fileLg,
+		FileXl: fileXl,
 	}
 }
 

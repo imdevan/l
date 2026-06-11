@@ -22,14 +22,14 @@ The tool lists directory contents in a styled table — a drop-in replacement fo
 
 colors should all be defined and routed through the config. use ansi colors by default but allow user to use hex as well. (same as curren implementation)
 
-- [ ] 1.1 Read current directory entries (name, type, size, modified)
-- [ ] 1.2 Render entries as a styled table using lipgloss
+- [x] 1.1 Read current directory entries (name, type, size, modified)
+- [x] 1.2 Render entries as a styled table using lipgloss
   - notes: columns — name, type, size, modified. Match the nushell table aesthetic from the plan example.
-  - [ ] 1.2.1 Color directory names (dir_color)
-  - [ ] 1.2.2 Color modified date by age (mod_newer → mod_new → mod_old → mod_older)
-  - [ ] 1.2.3 Color file size by bucket (file_sm → file_md → file_lg → file_xl)
-  - [ ] 1.2.4 Show "nothing here" message when directory is empty
-- [ ] 1.3 Show Nerd Font icons per entry type when `show_icons=true`
+  - [x] 1.2.1 Color directory names (dir_color)
+  - [x] 1.2.2 Color modified date by age (mod_newer → mod_new → mod_old → mod_older)
+  - [x] 1.2.3 Color file size by bucket (file_sm → file_md → file_lg → file_xl)
+  - [x] 1.2.4 Show "nothing here" message when directory is empty
+- [x] 1.3 Show Nerd Font icons per entry type when `show_icons=true`
 ### config colors:
 header_color=10
 border_color=08

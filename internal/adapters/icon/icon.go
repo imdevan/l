@@ -18,6 +18,11 @@ const (
 	File   Icon = "\uf15b" // Generic file icon
 	Script Icon = "\ue691" // Script/terminal icon
 	Shell  Icon = "\uf489" // Shell icon
+
+	// Directory/entry type icons
+	Dir     Icon = "\uf07b" // Folder icon
+	FileMd  Icon = "\uf15b" // File icon (alias)
+	Symlink Icon = "\uf481" // Symlink icon
 )
 
 // Get returns the icon as a string
