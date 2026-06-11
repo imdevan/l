@@ -1,6 +1,9 @@
 package domain
 
-import "time"
+import (
+	"os"
+	"time"
+)
 
 // EntryType indicates whether an entry is a file or directory.
 type EntryType string
@@ -16,6 +19,7 @@ type Entry struct {
 	Type     EntryType
 	Size     int64
 	Modified time.Time
+	Info     os.FileInfo // used for icon resolution
 }
 
 func (e Entry) IsDir() bool { return e.Type == EntryTypeDir }

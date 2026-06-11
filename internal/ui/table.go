@@ -6,8 +6,8 @@ import (
 
 	"github.com/charmbracelet/lipgloss"
 	"github.com/dustin/go-humanize"
+	"github.com/epilande/go-devicons"
 
-	"l/internal/adapters/icon"
 	"l/internal/domain"
 )
 
@@ -129,12 +129,10 @@ func buildRow(e domain.Entry, theme Theme, opts TableOptions) []string {
 
 func coloredName(e domain.Entry, theme Theme, showIcons bool) string {
 	var prefix string
-	if showIcons {
-		if e.IsDir() {
-			prefix = icon.Dir.String() + " "
-		} else {
-			prefix = icon.File.String() + " "
-		}
+	if showIcons && e.Info != nil {
+		style := devicons.IconForInfo(e.Info)
+		iconColor := lipgloss.Color(style.Color)
+		prefix = lipgloss.NewStyle().Foreground(iconColor).Render(style.Icon) + " "
 	}
 	if e.IsDir() {
 		return lipgloss.NewStyle().Foreground(theme.DirColor).Bold(true).Render(prefix + e.Name)

@@ -33,6 +33,7 @@ func (s *Service) ListEntries(dir string, showHidden bool) ([]domain.Entry, erro
 			Type:     t,
 			Size:     info.Size(),
 			Modified: info.ModTime(),
+			Info:     info,
 		})
 	}
 	return entries, nil
