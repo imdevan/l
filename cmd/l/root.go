@@ -139,6 +139,17 @@ func runListing(cmd *cobra.Command, opts *rootOptions, args []string) error {
 		return err
 	}
 
+	if len(args) > 0 && strings.TrimSpace(args[0]) != "" {
+		query := strings.ToLower(args[0])
+		filtered := entries[:0]
+		for _, e := range entries {
+			if strings.Contains(strings.ToLower(e.Name), query) {
+				filtered = append(filtered, e)
+			}
+		}
+		entries = filtered
+	}
+
 	workflow.SortEntries(entries, opts.sortKey(), opts.reverse)
 
 	if cfg.DirectoriesFirst && opts.sortKey() != workflow.SortType {
