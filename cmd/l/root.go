@@ -24,11 +24,14 @@ var (
 type rootOptions struct {
 	configPath  string
 	showVersion bool
-	sortByM     bool // -m modified
-	sortByT     bool // -t type
-	sortByS     bool // -s size
-	sortByN     bool // -n name (wins)
-	reverse     bool // -r
+	openConfig  bool
+	initConfig  bool
+	completion  string
+	sortByM     bool
+	sortByT     bool
+	sortByS     bool
+	sortByN     bool
+	reverse     bool
 }
 
 func (o *rootOptions) sortKey() workflow.SortKey {
@@ -46,7 +49,6 @@ func (o *rootOptions) sortKey() workflow.SortKey {
 	}
 }
 
-// anySortFlagSet reports whether the user explicitly passed a sort/reverse flag.
 func (o *rootOptions) anySortFlagSet() bool {
 	return o.sortByM || o.sortByT || o.sortByS || o.sortByN || o.reverse
 }
@@ -68,20 +70,29 @@ func newRootCmd() *cobra.Command {
 				cmd.Printf("%s\n", resolvedVersion())
 				return nil
 			}
+			if opts.completion != "" {
+				return runCompletion(cmd, opts.completion)
+			}
+			if opts.initConfig {
+				return runConfigInit(cmd, &configInitOptions{force: false})
+			}
+			if opts.openConfig {
+				return runConfig(cmd)
+			}
 			return runListing(cmd, opts, args)
 		},
 	}
 
 	cmd.Flags().StringVarP(&opts.configPath, "config", "c", "", "config file path")
 	cmd.Flags().BoolVarP(&opts.showVersion, "version", "v", false, "print version information")
+	cmd.Flags().BoolVarP(&opts.openConfig, "Config", "C", false, "open config in editor")
+	cmd.Flags().BoolVar(&opts.initConfig, "config-init", false, "generate default config file")
+	cmd.Flags().StringVar(&opts.completion, "completion", "", "print shell completion script (bash|zsh|fish|powershell)")
 	cmd.Flags().BoolVarP(&opts.sortByM, "sort-modified", "m", false, "sort by modified (newest first)")
 	cmd.Flags().BoolVarP(&opts.sortByT, "sort-type", "t", false, "sort by type (dirs first)")
 	cmd.Flags().BoolVarP(&opts.sortByS, "sort-size", "s", false, "sort by size (largest first)")
 	cmd.Flags().BoolVarP(&opts.sortByN, "sort-name", "n", false, "sort by name (wins over other sort flags)")
 	cmd.Flags().BoolVarP(&opts.reverse, "reverse", "r", false, "reverse sort order")
-
-	cmd.AddCommand(newConfigCmd())
-	cmd.AddCommand(newCompletionCmd())
 
 	return cmd
 }
@@ -115,7 +126,6 @@ func runListing(cmd *cobra.Command, opts *rootOptions, args []string) error {
 		cfg = domain.DefaultConfig()
 	}
 
-	// Apply default_flags from config when no sort/behavior flags were explicitly passed.
 	if !opts.anySortFlagSet() && strings.TrimSpace(cfg.DefaultFlags) != "" {
 		defaultArgs := strings.Fields(cfg.DefaultFlags)
 		if err := cmd.Flags().Parse(defaultArgs); err != nil {
@@ -131,7 +141,6 @@ func runListing(cmd *cobra.Command, opts *rootOptions, args []string) error {
 
 	workflow.SortEntries(entries, opts.sortKey(), opts.reverse)
 
-	// directories_first: stable-partition dirs before files unless -t already handles it
 	if cfg.DirectoriesFirst && opts.sortKey() != workflow.SortType {
 		workflow.DirsFirst(entries)
 	}

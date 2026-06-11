@@ -7,25 +7,8 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func newCompletionCmd() *cobra.Command {
-	cmd := &cobra.Command{
-		Use:   "completion [bash|zsh|fish|powershell]",
-		Short: "Generate shell completion scripts",
-		Long:  completionHelp(),
-		Args:  cobra.MaximumNArgs(1),
-		RunE: func(cmd *cobra.Command, args []string) error {
-			return runCompletion(cmd, args)
-		},
-	}
-	return cmd
-}
-
-func runCompletion(cmd *cobra.Command, args []string) error {
-	if len(args) == 0 {
-		return fmt.Errorf("shell is required (bash, zsh, fish, powershell)")
-	}
-	shell := strings.ToLower(strings.TrimSpace(args[0]))
-	switch shell {
+func runCompletion(cmd *cobra.Command, shell string) error {
+	switch strings.ToLower(strings.TrimSpace(shell)) {
 	case "bash":
 		return cmd.Root().GenBashCompletion(cmd.OutOrStdout())
 	case "zsh":
@@ -35,16 +18,6 @@ func runCompletion(cmd *cobra.Command, args []string) error {
 	case "powershell":
 		return cmd.Root().GenPowerShellCompletion(cmd.OutOrStdout())
 	default:
-		return fmt.Errorf("unsupported shell %q", shell)
+		return fmt.Errorf("unsupported shell %q (bash|zsh|fish|powershell)", shell)
 	}
-}
-
-func completionHelp() string {
-	return strings.Join([]string{
-		"Examples:",
-		"  l completion bash > /etc/bash_completion.d/l",
-		"  l completion zsh > ~/.zsh/completion/_l",
-		"  l completion fish > ~/.config/fish/completions/l.fish",
-		"  l completion powershell > l.ps1",
-	}, "\n")
 }
