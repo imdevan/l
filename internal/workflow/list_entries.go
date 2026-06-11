@@ -29,11 +29,12 @@ func (s *Service) ListEntries(dir string, showHidden bool) ([]domain.Entry, erro
 			t = domain.EntryTypeDir
 		}
 		entries = append(entries, domain.Entry{
-			Name:     de.Name(),
-			Type:     t,
-			Size:     info.Size(),
-			Modified: info.ModTime(),
-			Info:     info,
+			Name:        de.Name(),
+			Type:        t,
+			Size:        info.Size(),
+			Modified:    info.ModTime(),
+			Permissions: info.Mode().String(),
+			Info:        info,
 		})
 	}
 	return entries, nil

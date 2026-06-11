@@ -22,9 +22,10 @@ type Theme struct {
 	Border               lipgloss.Color
 
 	// Listing colors
-	DirColor  lipgloss.Color
-	FileColor lipgloss.Color
-	TypeColor lipgloss.Color
+	DirColor         lipgloss.Color
+	FileColor        lipgloss.Color
+	TypeColor        lipgloss.Color
+	PermissionsColor lipgloss.Color
 
 	// Modified age colors
 	ModNewer lipgloss.Color
@@ -67,9 +68,10 @@ func ThemeFromConfig(cfg domain.Config) Theme {
 		Muted:                resolveColor(cfg.Muted, "08"),
 		Border:               resolveColor(cfg.Border, "08"),
 
-		DirColor:  resolveColor(resolveFallback(cfg.DirColor, cfg.Primary), "12"),
-		FileColor: resolveColor(resolveFallback(cfg.FileColor, cfg.Text), "07"),
-		TypeColor: resolveColor(resolveFallback(cfg.TypeColor, cfg.Muted), "08"),
+		DirColor:         resolveColor(resolveFallback(cfg.DirColor, cfg.Primary), "12"),
+		FileColor:        resolveColor(resolveFallback(cfg.FileColor, cfg.Text), "07"),
+		TypeColor:        resolveColor(resolveFallback(cfg.TypeColor, cfg.Muted), "08"),
+		PermissionsColor: resolveColor(resolveFallback(cfg.PermissionsColor, cfg.Muted), "08"),
 
 		ModNewer: modNewer,
 		ModNew:   modNew,

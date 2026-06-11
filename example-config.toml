@@ -6,6 +6,18 @@ interactive_default = false
 # default_flags = "-m"
 # empty_dir_message = "empty dir"
 
+# Display options
+show_header = true
+show_border = true
+show_type = true
+show_size = true
+show_modified = true
+show_icons = true
+show_permissions = false
+show_bottom_header_for_large_returns = true
+always_show_bottom_header = false
+directories_first = false
+
 # Colors
 # Colors support named, numeric, or hex values (ex: 7, 13, "#ff8800").
 headings = "15"
@@ -23,6 +35,7 @@ border = "08"
 dir_color = "12"
 file_color = "07"
 type_color = "08"
+permissions_color = "08"
 
 # Modified age colors (mod_newer < 1h, mod_new < 1d, mod_old < 1w, mod_older < 4w)
 mod_newer_color = "10"

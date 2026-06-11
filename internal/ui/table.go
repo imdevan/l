@@ -13,31 +13,49 @@ import (
 
 // TableOptions controls which columns are rendered.
 type TableOptions struct {
-	ShowHeader   bool
-	ShowBorder   bool
-	ShowType     bool
-	ShowSize     bool
-	ShowModified bool
-	ShowIcons    bool
-	EmptyMessage string
+	ShowHeader                      bool
+	ShowBorder                      bool
+	ShowType                        bool
+	ShowSize                        bool
+	ShowModified                    bool
+	ShowIcons                       bool
+	ShowPermissions                 bool
+	ShowBottomHeaderForLargeReturns bool
+	AlwaysShowBottomHeader          bool
+	EmptyMessage                    string
 }
+
+// largeReturnThreshold is the row count at which the bottom header appears.
+const largeReturnThreshold = 20
 
 // DefaultTableOptions returns sensible defaults matching the plan.
 func DefaultTableOptions() TableOptions {
 	return TableOptions{
-		ShowHeader:   true,
-		ShowBorder:   true,
-		ShowType:     true,
-		ShowSize:     true,
-		ShowModified: true,
-		ShowIcons:    true,
-		EmptyMessage: "empty dir",
+		ShowHeader:                      true,
+		ShowBorder:                      true,
+		ShowType:                        true,
+		ShowSize:                        true,
+		ShowModified:                    true,
+		ShowIcons:                       true,
+		ShowPermissions:                 false,
+		ShowBottomHeaderForLargeReturns: true,
+		AlwaysShowBottomHeader:          false,
+		EmptyMessage:                    "empty dir",
 	}
 }
 
 // TableOptionsFromConfig builds TableOptions from a Config, with defaults.
 func TableOptionsFromConfig(cfg domain.Config) TableOptions {
 	opts := DefaultTableOptions()
+	opts.ShowHeader = cfg.ShowHeader
+	opts.ShowBorder = cfg.ShowBorder
+	opts.ShowType = cfg.ShowType
+	opts.ShowSize = cfg.ShowSize
+	opts.ShowModified = cfg.ShowModified
+	opts.ShowIcons = cfg.ShowIcons
+	opts.ShowPermissions = cfg.ShowPermissions
+	opts.ShowBottomHeaderForLargeReturns = cfg.ShowBottomHeaderForLargeReturns
+	opts.AlwaysShowBottomHeader = cfg.AlwaysShowBottomHeader
 	if strings.TrimSpace(cfg.EmptyDirMessage) != "" {
 		opts.EmptyMessage = cfg.EmptyDirMessage
 	}
@@ -102,6 +120,14 @@ func RenderTable(entries []domain.Entry, theme Theme, opts TableOptions) string 
 		sb.WriteString(renderRow(row, func(s string) string { return s }) + "\n")
 	}
 
+	showBottomHeader := opts.AlwaysShowBottomHeader ||
+		(opts.ShowBottomHeaderForLargeReturns && len(rows) >= largeReturnThreshold)
+
+	if opts.ShowHeader && showBottomHeader {
+		sb.WriteString(borderLine("├", "┼", "┤", "─") + "\n")
+		sb.WriteString(renderRow(headers, func(s string) string { return headerStyle.Render(s) }) + "\n")
+	}
+
 	if opts.ShowBorder {
 		sb.WriteString(borderLine("╰", "┴", "╯", "─"))
 	}
@@ -110,7 +136,11 @@ func RenderTable(entries []domain.Entry, theme Theme, opts TableOptions) string 
 }
 
 func buildHeaders(opts TableOptions) []string {
-	h := []string{"name"}
+	var h []string
+	if opts.ShowPermissions {
+		h = append(h, "permissions")
+	}
+	h = append(h, "name")
 	if opts.ShowType {
 		h = append(h, "type")
 	}
@@ -124,8 +154,11 @@ func buildHeaders(opts TableOptions) []string {
 }
 
 func buildRow(e domain.Entry, theme Theme, opts TableOptions) []string {
-	name := coloredName(e, theme, opts.ShowIcons)
-	row := []string{name}
+	var row []string
+	if opts.ShowPermissions {
+		row = append(row, lipgloss.NewStyle().Foreground(theme.PermissionsColor).Render(e.Permissions))
+	}
+	row = append(row, coloredName(e, theme, opts.ShowIcons))
 	if opts.ShowType {
 		row = append(row, lipgloss.NewStyle().Foreground(theme.TypeColor).Render(string(e.Type)))
 	}

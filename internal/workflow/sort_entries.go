@@ -53,3 +53,14 @@ func SortEntries(entries []domain.Entry, key SortKey, reverse bool) {
 func naturalLess(a, b string) bool {
 	return strings.ToLower(a) < strings.ToLower(b)
 }
+
+// DirsFirst stable-partitions entries so all directories precede files,
+// preserving relative order within each group.
+func DirsFirst(entries []domain.Entry) {
+	sort.SliceStable(entries, func(i, j int) bool {
+		if entries[i].IsDir() == entries[j].IsDir() {
+			return false
+		}
+		return entries[i].IsDir()
+	})
+}

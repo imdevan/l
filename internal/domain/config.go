@@ -46,6 +46,21 @@ type Config struct {
 
 	// Message shown when a directory is empty
 	EmptyDirMessage string `toml:"empty_dir_message"`
+
+	// Display options
+	ShowHeader                    bool `toml:"show_header"`
+	ShowBorder                    bool `toml:"show_border"`
+	ShowType                      bool `toml:"show_type"`
+	ShowSize                      bool `toml:"show_size"`
+	ShowModified                  bool `toml:"show_modified"`
+	ShowIcons                     bool `toml:"show_icons"`
+	ShowPermissions               bool `toml:"show_permissions"`
+	ShowBottomHeaderForLargeReturns bool `toml:"show_bottom_header_for_large_returns"`
+	AlwaysShowBottomHeader        bool `toml:"always_show_bottom_header"`
+	DirectoriesFirst              bool `toml:"directories_first"`
+
+	// Permissions color
+	PermissionsColor string `toml:"permissions_color"`
 }
 
 // DefaultConfig returns the default configuration values.
@@ -81,6 +96,19 @@ func DefaultConfig() Config {
 		FileXl: "04",
 
 		EmptyDirMessage: "empty dir",
+
+		ShowHeader:                      true,
+		ShowBorder:                      true,
+		ShowType:                        true,
+		ShowSize:                        true,
+		ShowModified:                    true,
+		ShowIcons:                       true,
+		ShowPermissions:                 false,
+		ShowBottomHeaderForLargeReturns: true,
+		AlwaysShowBottomHeader:          false,
+		DirectoriesFirst:                false,
+
+		PermissionsColor: "08",
 	}
 }
 

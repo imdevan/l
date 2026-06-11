@@ -131,6 +131,11 @@ func runListing(cmd *cobra.Command, opts *rootOptions, args []string) error {
 
 	workflow.SortEntries(entries, opts.sortKey(), opts.reverse)
 
+	// directories_first: stable-partition dirs before files unless -t already handles it
+	if cfg.DirectoriesFirst && opts.sortKey() != workflow.SortType {
+		workflow.DirsFirst(entries)
+	}
+
 	theme := ui.ThemeFromConfig(cfg)
 	fmt.Println(ui.RenderTable(entries, theme, ui.TableOptionsFromConfig(cfg)))
 	return nil

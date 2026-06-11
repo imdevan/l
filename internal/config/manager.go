@@ -99,6 +99,42 @@ type partialConfig struct {
 	Border               *string `toml:"border"`
 	InteractiveDefault   *bool   `toml:"interactive_default"`
 	ListSpacing          *string `toml:"list_spacing"`
+
+	// Listing colors
+	DirColor         *string `toml:"dir_color"`
+	FileColor        *string `toml:"file_color"`
+	TypeColor        *string `toml:"type_color"`
+	PermissionsColor *string `toml:"permissions_color"`
+
+	// Modified age colors
+	ModNewerColor *string `toml:"mod_newer_color"`
+	ModNewColor   *string `toml:"mod_new_color"`
+	ModOldColor   *string `toml:"mod_old_color"`
+	ModOlderColor *string `toml:"mod_older_color"`
+	ModifiedColor *string `toml:"modified_color"`
+
+	// File size colors
+	FileSm   *string `toml:"file_sm"`
+	FileMd   *string `toml:"file_md"`
+	FileLg   *string `toml:"file_lg"`
+	FileXl   *string `toml:"file_xl"`
+	FileSize *string `toml:"file_size"`
+
+	// Behavior
+	DefaultFlags    *string `toml:"default_flags"`
+	EmptyDirMessage *string `toml:"empty_dir_message"`
+
+	// Display options
+	ShowHeader                      *bool `toml:"show_header"`
+	ShowBorder                      *bool `toml:"show_border"`
+	ShowType                        *bool `toml:"show_type"`
+	ShowSize                        *bool `toml:"show_size"`
+	ShowModified                    *bool `toml:"show_modified"`
+	ShowIcons                       *bool `toml:"show_icons"`
+	ShowPermissions                 *bool `toml:"show_permissions"`
+	ShowBottomHeaderForLargeReturns *bool `toml:"show_bottom_header_for_large_returns"`
+	AlwaysShowBottomHeader          *bool `toml:"always_show_bottom_header"`
+	DirectoriesFirst                *bool `toml:"directories_first"`
 }
 
 func readConfig(path string) (*partialConfig, error) {
@@ -117,48 +153,51 @@ func readConfig(path string) (*partialConfig, error) {
 }
 
 func applyPartial(config *domain.Config, partial *partialConfig) {
-	if partial.Editor != nil {
-		config.Editor = *partial.Editor
-	}
-	if partial.Primary != nil {
-		config.Primary = *partial.Primary
-	}
-	if partial.Secondary != nil {
-		config.Secondary = *partial.Secondary
-	}
-	if partial.Headings != nil {
-		config.Headings = *partial.Headings
-	}
-	if partial.Text != nil {
-		config.Text = *partial.Text
-	}
-	if partial.TextHighlight != nil {
-		config.TextHighlight = *partial.TextHighlight
-	}
-	if partial.DescriptionHighlight != nil {
-		config.DescriptionHighlight = *partial.DescriptionHighlight
-	}
-	if partial.Tags != nil {
-		config.Tags = *partial.Tags
-	}
-	if partial.Flags != nil {
-		config.Flags = *partial.Flags
-	}
-	if partial.Muted != nil {
-		config.Muted = *partial.Muted
-	}
-	if partial.Accent != nil {
-		config.Accent = *partial.Accent
-	}
-	if partial.Border != nil {
-		config.Border = *partial.Border
-	}
-	if partial.InteractiveDefault != nil {
-		config.InteractiveDefault = *partial.InteractiveDefault
-	}
-	if partial.ListSpacing != nil {
-		config.ListSpacing = *partial.ListSpacing
-	}
+	if partial.Editor != nil { config.Editor = *partial.Editor }
+	if partial.Primary != nil { config.Primary = *partial.Primary }
+	if partial.Secondary != nil { config.Secondary = *partial.Secondary }
+	if partial.Headings != nil { config.Headings = *partial.Headings }
+	if partial.Text != nil { config.Text = *partial.Text }
+	if partial.TextHighlight != nil { config.TextHighlight = *partial.TextHighlight }
+	if partial.DescriptionHighlight != nil { config.DescriptionHighlight = *partial.DescriptionHighlight }
+	if partial.Tags != nil { config.Tags = *partial.Tags }
+	if partial.Flags != nil { config.Flags = *partial.Flags }
+	if partial.Muted != nil { config.Muted = *partial.Muted }
+	if partial.Accent != nil { config.Accent = *partial.Accent }
+	if partial.Border != nil { config.Border = *partial.Border }
+	if partial.InteractiveDefault != nil { config.InteractiveDefault = *partial.InteractiveDefault }
+	if partial.ListSpacing != nil { config.ListSpacing = *partial.ListSpacing }
+
+	if partial.DirColor != nil { config.DirColor = *partial.DirColor }
+	if partial.FileColor != nil { config.FileColor = *partial.FileColor }
+	if partial.TypeColor != nil { config.TypeColor = *partial.TypeColor }
+	if partial.PermissionsColor != nil { config.PermissionsColor = *partial.PermissionsColor }
+
+	if partial.ModNewerColor != nil { config.ModNewerColor = *partial.ModNewerColor }
+	if partial.ModNewColor != nil { config.ModNewColor = *partial.ModNewColor }
+	if partial.ModOldColor != nil { config.ModOldColor = *partial.ModOldColor }
+	if partial.ModOlderColor != nil { config.ModOlderColor = *partial.ModOlderColor }
+	if partial.ModifiedColor != nil { config.ModifiedColor = *partial.ModifiedColor }
+
+	if partial.FileSm != nil { config.FileSm = *partial.FileSm }
+	if partial.FileMd != nil { config.FileMd = *partial.FileMd }
+	if partial.FileLg != nil { config.FileLg = *partial.FileLg }
+	if partial.FileXl != nil { config.FileXl = *partial.FileXl }
+	if partial.FileSize != nil { config.FileSize = *partial.FileSize }
+
+	if partial.DefaultFlags != nil { config.DefaultFlags = *partial.DefaultFlags }
+	if partial.EmptyDirMessage != nil { config.EmptyDirMessage = *partial.EmptyDirMessage }
+
+	if partial.ShowHeader != nil { config.ShowHeader = *partial.ShowHeader }
+	if partial.ShowBorder != nil { config.ShowBorder = *partial.ShowBorder }
+	if partial.ShowType != nil { config.ShowType = *partial.ShowType }
+	if partial.ShowSize != nil { config.ShowSize = *partial.ShowSize }
+	if partial.ShowModified != nil { config.ShowModified = *partial.ShowModified }
+	if partial.ShowIcons != nil { config.ShowIcons = *partial.ShowIcons }
+	if partial.ShowPermissions != nil { config.ShowPermissions = *partial.ShowPermissions }
+	if partial.ShowBottomHeaderForLargeReturns != nil { config.ShowBottomHeaderForLargeReturns = *partial.ShowBottomHeaderForLargeReturns }
+	if partial.AlwaysShowBottomHeader != nil { config.AlwaysShowBottomHeader = *partial.AlwaysShowBottomHeader }
+	if partial.DirectoriesFirst != nil { config.DirectoriesFirst = *partial.DirectoriesFirst }
 }
 
 func expandPath(value string) string {
