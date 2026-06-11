@@ -1,6 +1,6 @@
 package config
 
-import "go-cli-template/internal/domain"
+import "l/internal/domain"
 
 // Manager describes configuration persistence behavior.
 type Manager interface {

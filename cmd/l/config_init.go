@@ -8,10 +8,10 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"go-cli-template/internal/adapters/editor"
-	"go-cli-template/internal/config"
-	"go-cli-template/internal/domain"
-	"go-cli-template/internal/utils"
+	"l/internal/adapters/editor"
+	"l/internal/config"
+	"l/internal/domain"
+	"l/internal/utils"
 )
 
 type configInitOptions struct {
