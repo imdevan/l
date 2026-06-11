@@ -79,6 +79,7 @@ file_size = 08 # overrides other file colors if present
 ## Feature 5: Display options (config-driven)
 
 - see config booleans below for default values 
+- update default config. update docs
 
 - [ ] 5.1 `show_header` — toggle column header row
 - [ ] 5.2 `show_border` — toggle table border
