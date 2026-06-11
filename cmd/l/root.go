@@ -32,7 +32,6 @@ type rootOptions struct {
 }
 
 func (o *rootOptions) sortKey() workflow.SortKey {
-	// -n wins if multiple flags present
 	switch {
 	case o.sortByN:
 		return workflow.SortName
@@ -45,6 +44,11 @@ func (o *rootOptions) sortKey() workflow.SortKey {
 	default:
 		return workflow.SortName
 	}
+}
+
+// anySortFlagSet reports whether the user explicitly passed a sort/reverse flag.
+func (o *rootOptions) anySortFlagSet() bool {
+	return o.sortByM || o.sortByT || o.sortByS || o.sortByN || o.reverse
 }
 
 var rootCmd = newRootCmd()
@@ -94,7 +98,7 @@ func resolvedVersion() string {
 	return ver
 }
 
-func runListing(_ *cobra.Command, opts *rootOptions, _ []string) error {
+func runListing(cmd *cobra.Command, opts *rootOptions, args []string) error {
 	cwd, err := os.Getwd()
 	if err != nil {
 		return fmt.Errorf("failed to get working directory: %w", err)
@@ -111,6 +115,14 @@ func runListing(_ *cobra.Command, opts *rootOptions, _ []string) error {
 		cfg = domain.DefaultConfig()
 	}
 
+	// Apply default_flags from config when no sort/behavior flags were explicitly passed.
+	if !opts.anySortFlagSet() && strings.TrimSpace(cfg.DefaultFlags) != "" {
+		defaultArgs := strings.Fields(cfg.DefaultFlags)
+		if err := cmd.Flags().Parse(defaultArgs); err != nil {
+			return fmt.Errorf("invalid default_flags %q: %w", cfg.DefaultFlags, err)
+		}
+	}
+
 	svc := workflow.New()
 	entries, err := svc.ListEntries(cwd, false)
 	if err != nil {
@@ -120,6 +132,6 @@ func runListing(_ *cobra.Command, opts *rootOptions, _ []string) error {
 	workflow.SortEntries(entries, opts.sortKey(), opts.reverse)
 
 	theme := ui.ThemeFromConfig(cfg)
-	fmt.Println(ui.RenderTable(entries, theme, ui.DefaultTableOptions()))
+	fmt.Println(ui.RenderTable(entries, theme, ui.TableOptionsFromConfig(cfg)))
 	return nil
 }

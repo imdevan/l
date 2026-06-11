@@ -70,11 +70,11 @@ file_size = 08 # overrides other file colors if present
 
 ## Feature 4: Config
 
-- [ ] 4.1 Wire new config fields into `internal/config`
+- [x] 4.1 Wire new config fields into `internal/config`
   - notes: all fields listed in plan/simple.md under `# config`
-- [ ] 4.2 Add config fields to `example-config.toml` and `config_init.go`
-- [ ] 4.3 `default_flags` string: parsed and applied as if passed on the CLI
-- [ ] 4.4 `empty_dir_message` string: returned if directory is empty. default: "empty dir"
+- [x] 4.2 Add config fields to `example-config.toml` and `config_init.go`
+- [x] 4.3 `default_flags` string: parsed and applied as if passed on the CLI
+- [x] 4.4 `empty_dir_message` string: returned if directory is empty. default: "empty dir"
 
 ## Feature 5: Display options (config-driven)
 

@@ -19,6 +19,7 @@ type TableOptions struct {
 	ShowSize     bool
 	ShowModified bool
 	ShowIcons    bool
+	EmptyMessage string
 }
 
 // DefaultTableOptions returns sensible defaults matching the plan.
@@ -30,13 +31,23 @@ func DefaultTableOptions() TableOptions {
 		ShowSize:     true,
 		ShowModified: true,
 		ShowIcons:    true,
+		EmptyMessage: "empty dir",
 	}
+}
+
+// TableOptionsFromConfig builds TableOptions from a Config, with defaults.
+func TableOptionsFromConfig(cfg domain.Config) TableOptions {
+	opts := DefaultTableOptions()
+	if strings.TrimSpace(cfg.EmptyDirMessage) != "" {
+		opts.EmptyMessage = cfg.EmptyDirMessage
+	}
+	return opts
 }
 
 // RenderTable renders entries as a styled lipgloss table.
 func RenderTable(entries []domain.Entry, theme Theme, opts TableOptions) string {
 	if len(entries) == 0 {
-		return lipgloss.NewStyle().Foreground(theme.Muted).Render("🧙🏼‍♂️ nothing here")
+		return lipgloss.NewStyle().Foreground(theme.Muted).Render(opts.EmptyMessage)
 	}
 
 	headerStyle := lipgloss.NewStyle().Foreground(theme.Headings).Bold(true)
@@ -116,7 +127,7 @@ func buildRow(e domain.Entry, theme Theme, opts TableOptions) []string {
 	name := coloredName(e, theme, opts.ShowIcons)
 	row := []string{name}
 	if opts.ShowType {
-		row = append(row, lipgloss.NewStyle().Foreground(theme.Muted).Render(string(e.Type)))
+		row = append(row, lipgloss.NewStyle().Foreground(theme.TypeColor).Render(string(e.Type)))
 	}
 	if opts.ShowSize {
 		row = append(row, coloredSize(e, theme))
@@ -128,16 +139,21 @@ func buildRow(e domain.Entry, theme Theme, opts TableOptions) []string {
 }
 
 func coloredName(e domain.Entry, theme Theme, showIcons bool) string {
-	var prefix string
+	nameColor := theme.FileColor
+	if e.IsDir() {
+		nameColor = theme.DirColor
+	}
+	nameStyle := lipgloss.NewStyle().Foreground(nameColor)
+	if e.IsDir() {
+		nameStyle = nameStyle.Bold(true)
+	}
+
 	if showIcons && e.Info != nil {
 		style := devicons.IconForInfo(e.Info)
-		iconColor := lipgloss.Color(style.Color)
-		prefix = lipgloss.NewStyle().Foreground(iconColor).Render(style.Icon) + " "
+		icon := lipgloss.NewStyle().Foreground(lipgloss.Color(style.Color)).Render(style.Icon)
+		return icon + " " + nameStyle.Render(e.Name)
 	}
-	if e.IsDir() {
-		return lipgloss.NewStyle().Foreground(theme.DirColor).Bold(true).Render(prefix + e.Name)
-	}
-	return lipgloss.NewStyle().Foreground(theme.FileColor).Render(prefix + e.Name)
+	return nameStyle.Render(e.Name)
 }
 
 func coloredSize(e domain.Entry, theme Theme) string {

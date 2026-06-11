@@ -2,11 +2,9 @@
 editor = "nvim"
 
 # CLI behavior
-interactive_default = true
-
-# UI
-# list_spacing options: compact (title only), tight (title + description, no margin), space (default, with spacing)
-list_spacing = "space"
+interactive_default = false
+# default_flags = "-m"
+# empty_dir_message = "empty dir"
 
 # Colors
 # Colors support named, numeric, or hex values (ex: 7, 13, "#ff8800").
@@ -20,3 +18,22 @@ tags = "13"
 flags = "12"
 muted = "08"
 border = "08"
+
+# Listing colors
+dir_color = "12"
+file_color = "07"
+type_color = "08"
+
+# Modified age colors (mod_newer < 1h, mod_new < 1d, mod_old < 1w, mod_older < 4w)
+mod_newer_color = "10"
+mod_new_color = "02"
+mod_old_color = "03"
+mod_older_color = "04"
+# modified_color = "08"  # overrides all mod colors when set
+
+# File size colors (file_sm < 10KB, file_md < 100KB, file_lg < 1MB, file_xl >= 1MB)
+file_sm = "10"
+file_md = "02"
+file_lg = "03"
+file_xl = "04"
+# file_size = "08"  # overrides all size colors when set

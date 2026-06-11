@@ -24,6 +24,7 @@ type Theme struct {
 	// Listing colors
 	DirColor  lipgloss.Color
 	FileColor lipgloss.Color
+	TypeColor lipgloss.Color
 
 	// Modified age colors
 	ModNewer lipgloss.Color
@@ -68,6 +69,7 @@ func ThemeFromConfig(cfg domain.Config) Theme {
 
 		DirColor:  resolveColor(resolveFallback(cfg.DirColor, cfg.Primary), "12"),
 		FileColor: resolveColor(resolveFallback(cfg.FileColor, cfg.Text), "07"),
+		TypeColor: resolveColor(resolveFallback(cfg.TypeColor, cfg.Muted), "08"),
 
 		ModNewer: modNewer,
 		ModNew:   modNew,
