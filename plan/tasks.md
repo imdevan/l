@@ -63,7 +63,7 @@ file_size = 08 # overrides other file colors if present
 
 ## Feature 3: Filtering & navigation
 
-- [ ] 3.1 Optional positional arg as a filter query (substring match on name)
+- [x] 3.1 Optional positional arg as a filter query (substring match on name)
 - [ ] 3.2 Directory hop: if query exactly matches a directory name, `cd` into it and list
   - [ ] 3.2.1 If query matches exactly one directory (fuzzy), hop into it
   - [ ] 3.2.2 Two positional args: first is the directory to hop, second is the filter query inside that directory
@@ -76,7 +76,7 @@ file_size = 08 # overrides other file colors if present
   - notes: all fields listed in plan/simple.md under `# config`
 - [x] 4.2 Add config fields to `example-config.toml` and `config_init.go`
 - [x] 4.3 `default_flags` string: parsed and applied as if passed on the CLI
-- [x] 4.4 `empty_dir_message` string: returned if directory is empty. default: "empty dir"
+<!-- - [x] 4.4 `empty_dir_message` string: returned if directory is empty. default: "empty dir" -->
 
 ## Feature 5: Display options (config-driven)
 
