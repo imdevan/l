@@ -1,16 +1,16 @@
 ---
 title: completion
-description: Generate shell completion scripts
+description: 
 ---
 
-Generate shell completion scripts
+
 
 ## Usage
 
 ```bash
-go-cli-template completion [bash|zsh|fish|powershell]
+l completion
 ```
 
 ## Source
 
-See [completion.go](https://github.com/imdevan/go-cli-template//blob/main/cmd/go-cli-template/completion.go) for implementation details.
+See [completion.go](https://github.com/imdevan/l//blob/main/cmd/l/completion.go) for implementation details.

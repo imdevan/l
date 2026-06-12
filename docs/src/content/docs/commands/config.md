@@ -8,9 +8,9 @@ View or edit configuration
 ## Usage
 
 ```bash
-go-cli-template config
+l config
 ```
 
 ## Source
 
-See [config.go](https://github.com/imdevan/go-cli-template//blob/main/cmd/go-cli-template/config.go) for implementation details.
+See [config.go](https://github.com/imdevan/l//blob/main/cmd/l/config.go) for implementation details.
