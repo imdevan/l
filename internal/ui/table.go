@@ -183,7 +183,13 @@ func coloredName(e domain.Entry, theme Theme, showIcons bool) string {
 
 	if showIcons && e.Info != nil {
 		style := devicons.IconForInfo(e.Info)
-		icon := lipgloss.NewStyle().Foreground(lipgloss.Color(style.Color)).Render(style.Icon)
+		iconColor := lipgloss.Color(style.Color)
+		iconGlyph := style.Icon
+		if e.IsDir() {
+			iconColor = nameColor
+			iconGlyph = "\U000F0256" // nf-md-folder_outline
+		}
+		icon := lipgloss.NewStyle().Foreground(iconColor).Render(iconGlyph)
 		return icon + " " + nameStyle.Render(e.Name)
 	}
 	return nameStyle.Render(e.Name)
