@@ -28,10 +28,11 @@ type rootOptions struct {
 	initConfig  bool
 	completion  string
 	sortByM     bool
-	sortByT     bool
-	sortByS     bool
-	sortByN     bool
-	reverse     bool
+	sortByT    bool
+	sortByS    bool
+	sortByN    bool
+	reverse    bool
+	showHidden bool
 }
 
 func (o *rootOptions) sortKey() workflow.SortKey {
@@ -62,8 +63,27 @@ func Execute() error {
 func newRootCmd() *cobra.Command {
 	opts := &rootOptions{}
 	cmd := &cobra.Command{
-		Use:   name,
+		Use:   name + " [filter]",
 		Short: short,
+		Long: `l — a styled directory listing tool
+
+Usage:
+  l [filter]          list current directory, optionally filtered by name
+  l -m                sort by modified (newest first)
+  l -s                sort by size (largest first)
+  l -t                sort by type (dirs first)
+  l -n                sort by name
+  l -r                reverse sort order
+  l -a                show hidden files
+
+Config:
+  l -C                open config in editor
+  l --config-init     generate default config file
+  l -c <path>         use specific config file
+
+Other:
+  l -v                print version
+  l --completion zsh  print shell completion script`,
 		Args:  cobra.ArbitraryArgs,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if opts.showVersion {
@@ -93,6 +113,7 @@ func newRootCmd() *cobra.Command {
 	cmd.Flags().BoolVarP(&opts.sortByS, "sort-size", "s", false, "sort by size (largest first)")
 	cmd.Flags().BoolVarP(&opts.sortByN, "sort-name", "n", false, "sort by name (wins over other sort flags)")
 	cmd.Flags().BoolVarP(&opts.reverse, "reverse", "r", false, "reverse sort order")
+	cmd.Flags().BoolVarP(&opts.showHidden, "all", "a", false, "show hidden files (dotfiles)")
 
 	return cmd
 }
@@ -134,7 +155,7 @@ func runListing(cmd *cobra.Command, opts *rootOptions, args []string) error {
 	}
 
 	svc := workflow.New()
-	entries, err := svc.ListEntries(cwd, false)
+	entries, err := svc.ListEntries(cwd, opts.showHidden)
 	if err != nil {
 		return err
 	}

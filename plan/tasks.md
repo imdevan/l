@@ -66,7 +66,7 @@ file_size = 08 # overrides other file colors if present
   - [ ] 3.2.1 If query matches exactly one directory (fuzzy), hop into it
   - [ ] 3.2.2 Two positional args: first is the directory to hop, second is the filter query inside that directory
   - [ ] 3.2.3 Warn when second arg is ignored (ambiguous first arg, no hop occurred)
-- [ ] 3.3 `-a` flag: show hidden files (dotfiles)
+- [x] 3.3 `-a` flag: show hidden files (dotfiles)
 
 ## Feature 4: Config
 
