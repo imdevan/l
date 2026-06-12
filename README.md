@@ -5,6 +5,8 @@
 
 `l` is a fast, styled `ls` replacement with Nerd Font icons, color-coded output, and full TOML configuration.
 
+Inspired by Nushell ls function. Re-implemented in Go, using cobra + lipgloss.
+
 ## Features
 
 - Styled table output with color-coded names, sizes, and modified dates
