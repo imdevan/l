@@ -1,5 +1,8 @@
 # l
 
+<img width="1095" height="628" alt="screenshot-2026-06-11_21-59-29" src="https://github.com/user-attachments/assets/d3592213-ce7e-498b-9d95-3853dad6e13a" />
+
+
 `l` is a fast, styled `ls` replacement with Nerd Font icons, color-coded output, and full TOML configuration.
 
 ## Features
