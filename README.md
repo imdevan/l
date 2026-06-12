@@ -10,24 +10,10 @@
 - Filter by substring, show/hide hidden files, show only files or dirs
 - Fully configurable via TOML — all colors, display options, and default flags
 
-## Requirements
-
-- [Go](https://go.dev/) — build from source
-- [Just](https://just.systems/) — run scripts
-- Nerd Font — for icons (optional, disable with `show_icons = false`)
-
-## Quick start
-
-```bash
-gh repo clone imdevan/l
-cd l
-just build-run
-```
-
 ## Usage
 
 ```
-l [filter]          list current directory, optionally filtered by name
+l [filter] [flags] list current directory, optionally filtered by name
 
 Sorting:
   -m                sort by modified (newest first)
@@ -52,6 +38,7 @@ Other:
   -h                help
 ```
 
+
 ## Configuration
 
 Configuration is stored at `$XDG_CONFIG_HOME/l/config.toml` (typically `~/.config/l/config.toml`).
@@ -74,7 +61,22 @@ See [CONFIG.md](./CONFIG.md) for all options, or [example-config.toml](./example
 
 See [INSTALL.md](./INSTALL.md).
 
-## Development
+## Requirements
+
+- [Go](https://go.dev/) — build from source
+- [Just](https://just.systems/) — run scripts
+- Nerd Font — for icons (optional, disable with `show_icons = false`)
+
+# Development
+## Quick start
+
+```bash
+gh repo clone imdevan/l
+cd l
+just build-run
+```
+
+## Just scripts
 
 ```bash
 just build           # Build binary
@@ -83,3 +85,4 @@ just test            # Run tests
 just install         # Install to /usr/local/bin
 just watch           # Rebuild on file changes
 ```
+
