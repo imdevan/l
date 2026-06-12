@@ -1,25 +1,17 @@
-# go-cli-template
+# l
+
+`l` is an ls replacement. 
 
 <img width="480" height="270" alt="screenshot-2026-02-23_16-30-13" src="https://github.com/user-attachments/assets/65386b56-f06f-47be-9063-5c947b30dc51" />
 
-an ls replacement
+little `l` is a big **W**
 
 ## Features
 
-- Interactive list with filtering
-- [Built on go Cobra](https://github.com/spf13/cobra)
-- Configuration management with TOML
-- Styles, build scripts, and tests to get you started.
-- [Inline Bubble Tea TUI components](https://github.com/charmbracelet/bubbletea)
-- Homebrew and aur package management with TOML too!
-- Automatic documentation with [gomarkdoc](https://github.com/princjef/gomarkdoc) and [astro starlight](https://starlight.astro.build/)
-  - With automated github deployment workflow
-- [Just](https://just.systems/) recipes to build and release to your favorite package manager
-  - homebrew tap, AUR, Github release, and manual download are currently supported
-- XDG Base Directory support
-- Utils for NerdFont, and Editor interaction
-- Integration and unit tested
-- Shell completion (bash, zsh, fish, powershell)
+- Simple clean ls replacement
+- [Built on go Cobra](https://github.com/spf13/cobra) styled with [lipgloss](https://github.com/charmbracelet/lipgloss)
+- Highly configurable via TOML
+- 
 
 ## Author's Note
 

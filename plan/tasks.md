@@ -58,6 +58,8 @@ file_size = 08 # overrides other file colors if present
 - [x] 2.5 `-n` flag: sort by name (explicit; wins over other sort flags)
 - [x] 2.6 `-r` flag: reverse sort order
   - notes: `-r` toggles the default direction, it does not force ascending. e.g. `-m` is desc by default; `-m -r` becomes ascending.
+- [x] 2.7 `-f` only show files
+- [x] 2.8 `-d` only show directories
 
 ## Feature 3: Filtering & navigation
 

@@ -33,6 +33,8 @@ type rootOptions struct {
 	sortByN    bool
 	reverse    bool
 	showHidden bool
+	filesOnly  bool
+	dirsOnly   bool
 }
 
 func (o *rootOptions) sortKey() workflow.SortKey {
@@ -114,6 +116,8 @@ Other:
 	cmd.Flags().BoolVarP(&opts.sortByN, "sort-name", "n", false, "sort by name (wins over other sort flags)")
 	cmd.Flags().BoolVarP(&opts.reverse, "reverse", "r", false, "reverse sort order")
 	cmd.Flags().BoolVarP(&opts.showHidden, "all", "a", false, "show hidden files (dotfiles)")
+	cmd.Flags().BoolVarP(&opts.filesOnly, "files", "f", false, "only show files")
+	cmd.Flags().BoolVarP(&opts.dirsOnly, "dirs", "d", false, "only show directories")
 
 	return cmd
 }
@@ -158,6 +162,24 @@ func runListing(cmd *cobra.Command, opts *rootOptions, args []string) error {
 	entries, err := svc.ListEntries(cwd, opts.showHidden)
 	if err != nil {
 		return err
+	}
+
+	if opts.filesOnly {
+		filtered := entries[:0]
+		for _, e := range entries {
+			if !e.IsDir() {
+				filtered = append(filtered, e)
+			}
+		}
+		entries = filtered
+	} else if opts.dirsOnly {
+		filtered := entries[:0]
+		for _, e := range entries {
+			if e.IsDir() {
+				filtered = append(filtered, e)
+			}
+		}
+		entries = filtered
 	}
 
 	if len(args) > 0 && strings.TrimSpace(args[0]) != "" {
