@@ -88,7 +88,7 @@ file_size = 08 # overrides other file colors if present
 - [ ] 5.7 `always_show_bottom_header` — always repeat header at bottom
 - [x] 5.8 `show_permissions` — show permissions column when enabled
 - [x] 5.9 `empty_dir_message` — message to show when directory is empty
-- [ ] 5.10 replace `directories_first` with `directory_position` — "top" | "bottom" | "inline" default: inline
+- [x] 5.10 replace `directories_first` with `directory_position` — "top" | "bottom" | "inline" default: inline
 
 ### config booleans:
 show_header=true
@@ -105,9 +105,9 @@ default_interactive=false
 
 
 ## Feature 6: fix flags
-- [ ] 6.1 config: -c, --config
-- [ ] 6.2 config file path: --local-config, no short
-- [ ] 6.3 config-init: -C, --config-init
+- [x] 6.1 config: -c, --config
+- [x] 6.2 config file path: --local-config, no short
+- [x] 6.3 config-init: -C, --config-init
   - remove force check. 
   - instead use overwite confirmation from ui/confirmation
   - l -C -y (--yes) should also be acceptable
