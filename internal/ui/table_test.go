@@ -92,4 +92,28 @@ func TestRenderTable_BottomHeaderForLargeReturns(t *testing.T) {
 			t.Errorf("expected header 'name' to appear 2 times for fallback threshold with 20 entries, got %d", count)
 		}
 	})
+
+	t.Run("always repeat when always_show_bottom_header is true", func(t *testing.T) {
+		getTerminalHeight = func() int { return 100 } // very large terminal
+		opts := DefaultTableOptions()
+		opts.ShowHeader = true
+		opts.AlwaysShowBottomHeader = true
+
+		result := RenderTable(entries, theme, opts)
+		if count := strings.Count(result, "name"); count != 2 {
+			t.Errorf("expected header 'name' to appear 2 times when always_show_bottom_header is true, got %d. Result:\n%s", count, result)
+		}
+	})
+
+	t.Run("repeat at bottom when show_header is false but always_show_bottom_header is true", func(t *testing.T) {
+		opts := DefaultTableOptions()
+		opts.ShowHeader = false
+		opts.AlwaysShowBottomHeader = true
+
+		result := RenderTable(entries, theme, opts)
+		// Header should appear exactly once (at the bottom)
+		if count := strings.Count(result, "name"); count != 1 {
+			t.Errorf("expected header 'name' to appear exactly 1 time (at bottom), got %d. Result:\n%s", count, result)
+		}
+	})
 }

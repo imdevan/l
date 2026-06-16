@@ -173,7 +173,7 @@ func RenderTable(entries []domain.Entry, theme Theme, opts TableOptions) string 
 		}
 	}
 
-	if opts.ShowHeader && showBottomHeader {
+	if (opts.ShowHeader && showBottomHeader) || opts.AlwaysShowBottomHeader {
 		sb.WriteString(borderLine("├", "┼", "┤", "─") + "\n")
 		sb.WriteString(renderRow(headers, func(s string) string { return headerStyle.Render(s) }) + "\n")
 	}
