@@ -16,7 +16,7 @@ show_icons = true
 show_permissions = false
 show_bottom_header_for_large_returns = true
 always_show_bottom_header = false
-directories_first = false
+directory_position = "inline"
 
 # Colors
 # Colors support named, numeric, or hex values (ex: 7, 13, "#ff8800").

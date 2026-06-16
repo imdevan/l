@@ -1,94 +1,74 @@
 # Configuration
 
-Configuration file location: `$XDG_CONFIG_HOME/go-cli-template/config.toml`
+Config file location: `$XDG_CONFIG_HOME/l/config.toml` (typically `~/.config/l/config.toml`)
 
-## Configuration Options
+Generate with defaults:
 
-The following options can be set in your configuration file:
+```bash
+l --config-init
+```
 
-### General Settings
-
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `editor` | string | `nvim` | Editor to use for editing bookmarks and config files |
-| `interactive_default` | bool | `false` | Start in interactive mode by default when no arguments are provided |
-
-### Display Settings
+## General
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `list_spacing` | string | `space` | List item spacing. Options: `compact` (title only), `tight` (title + description, no margin), `space` (default, with spacing) |
+| `editor` | string | `nvim` | Editor opened by `l -C` |
+| `interactive_default` | bool | `false` | Start in interactive mode by default |
+| `default_flags` | string | — | Default CLI flags (e.g. `"-m -a"`) |
+| `empty_dir_message` | string | `empty dir` | Message shown when directory is empty |
 
-### Colors
-
-Colors support named, numeric, or hex values (e.g., `7`, `13`, `"#ff8800"`).
+## Display
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `headings` | string | `15` | Color for headings |
-| `primary` | string | `02` | Primary color |
-| `secondary` | string | `06` | Secondary color |
-| `text` | string | `07` | Text color |
+| `show_header` | bool | `true` | Show column header row |
+| `show_border` | bool | `true` | Show table border |
+| `show_type` | bool | `true` | Show file type column |
+| `show_size` | bool | `true` | Show file size column |
+| `show_modified` | bool | `true` | Show modified date column |
+| `show_icons` | bool | `true` | Show Nerd Font icons |
+| `show_permissions` | bool | `false` | Show permissions column |
+| `show_bottom_header_for_large_returns` | bool | `true` | Repeat header at bottom when row count exceeds window height |
+| `always_show_bottom_header` | bool | `false` | Always repeat header at bottom |
+| `directory_position` | string | `inline` | Directory sort position: `top`, `bottom`, or `inline` (sorted with files) |
+
+## Colors
+
+Colors accept terminal color numbers, named colors, or hex values (e.g. `7`, `"red"`, `"#ff8800"`).
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `headings` | string | `15` | Column header color |
+| `primary` | string | `02` | Primary accent color |
+| `secondary` | string | `06` | Secondary accent color |
+| `text` | string | `07` | Default text color |
 | `text_highlight` | string | `06` | Highlighted text color |
 | `description_highlight` | string | `05` | Highlighted description color |
-| `tags` | string | `13` | Tags color |
-| `flags` | string | `12` | Flags color |
-| `muted` | string | `08` | Muted text color |
-| `border` | string | `08` | Border color |
+| `muted` | string | `08` | Muted/dim text color |
+| `border` | string | `08` | Table border color |
+| `dir_color` | string | `12` | Directory name color |
+| `file_color` | string | `07` | File name color |
+| `type_color` | string | `08` | File type column color |
+| `permissions_color` | string | `08` | Permissions column color |
 
-## Example Configuration
+### Modified age colors
 
-```toml
-# General
-editor = "nvim"
+Applied based on how recently a file was modified.
 
-# CLI behavior
-interactive_default = true
+| Option | Default | When applied |
+|--------|---------|--------------|
+| `mod_newer_color` | `10` | < 1 hour ago |
+| `mod_new_color` | `02` | < 1 day ago |
+| `mod_old_color` | `03` | < 1 week ago |
+| `mod_older_color` | `04` | < 4 weeks ago |
+| `modified_color` | — | Overrides all of the above when set |
 
-# UI
-# list_spacing options: compact (title only), tight (title + description, no margin), space (default, with spacing)
-list_spacing = "space"
+### File size colors
 
-# Colors
-# Colors support named, numeric, or hex values (ex: 7, 13, "#ff8800").
-headings = "15"
-primary = "02"
-secondary = "06"
-text = "07"
-text_highlight = "06"
-description_highlight = "05"
-tags = "13"
-flags = "12"
-muted = "08"
-border = "08"
-```
-
-## Initializing Configuration
-
-To create a new configuration file with default values:
-
-```bash
-bookmark config init
-```
-
-To overwrite an existing configuration:
-
-```bash
-bookmark config init --force
-```
-
-To create and immediately open in your editor:
-
-```bash
-bookmark config init --editor
-```
-
-## Editing Configuration
-
-To edit your configuration file:
-
-```bash
-bookmark config
-```
-
-This will open the config file in your configured editor.
+| Option | Default | When applied |
+|--------|---------|--------------|
+| `file_sm` | `10` | < 10 KB |
+| `file_md` | `02` | < 100 KB |
+| `file_lg` | `03` | < 1 MB |
+| `file_xl` | `04` | ≥ 1 MB |
+| `file_size` | — | Overrides all of the above when set |
