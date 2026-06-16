@@ -1,12 +1,14 @@
 package ui
 
 import (
+	"os"
 	"strings"
 	"time"
 
 	"github.com/charmbracelet/lipgloss"
 	"github.com/dustin/go-humanize"
 	"github.com/epilande/go-devicons"
+	"golang.org/x/term"
 
 	"l/internal/domain"
 )
@@ -27,6 +29,29 @@ type TableOptions struct {
 
 // largeReturnThreshold is the row count at which the bottom header appears.
 const largeReturnThreshold = 20
+
+// getTerminalHeight returns the terminal height or -1 if not a terminal. Stubbable for tests.
+var getTerminalHeight = func() int {
+	if term.IsTerminal(int(os.Stdout.Fd())) {
+		_, h, err := term.GetSize(int(os.Stdout.Fd()))
+		if err == nil && h > 0 {
+			return h
+		}
+	}
+	if term.IsTerminal(int(os.Stderr.Fd())) {
+		_, h, err := term.GetSize(int(os.Stderr.Fd()))
+		if err == nil && h > 0 {
+			return h
+		}
+	}
+	if term.IsTerminal(int(os.Stdin.Fd())) {
+		_, h, err := term.GetSize(int(os.Stdin.Fd()))
+		if err == nil && h > 0 {
+			return h
+		}
+	}
+	return -1
+}
 
 // DefaultTableOptions returns sensible defaults matching the plan.
 func DefaultTableOptions() TableOptions {
@@ -125,8 +150,28 @@ func RenderTable(entries []domain.Entry, theme Theme, opts TableOptions) string 
 		sb.WriteString(renderRow(row, func(s string) string { return s }) + "\n")
 	}
 
-	showBottomHeader := opts.AlwaysShowBottomHeader ||
-		(opts.ShowBottomHeaderForLargeReturns && len(rows) >= largeReturnThreshold)
+	showBottomHeader := opts.AlwaysShowBottomHeader
+	if !showBottomHeader && opts.ShowBottomHeaderForLargeReturns {
+		extra := 0
+		if opts.ShowHeader {
+			extra += 2
+		}
+		if opts.ShowBorder {
+			extra += 2
+		}
+		totalHeight := len(rows) + extra
+
+		termHeight := getTerminalHeight()
+		if termHeight > 0 {
+			if totalHeight > termHeight {
+				showBottomHeader = true
+			}
+		} else {
+			if len(rows) >= largeReturnThreshold {
+				showBottomHeader = true
+			}
+		}
+	}
 
 	if opts.ShowHeader && showBottomHeader {
 		sb.WriteString(borderLine("├", "┼", "┤", "─") + "\n")
