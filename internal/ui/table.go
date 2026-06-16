@@ -65,7 +65,12 @@ func TableOptionsFromConfig(cfg domain.Config) TableOptions {
 // RenderTable renders entries as a styled lipgloss table.
 func RenderTable(entries []domain.Entry, theme Theme, opts TableOptions) string {
 	if len(entries) == 0 {
-		return lipgloss.NewStyle().Foreground(theme.Muted).Render(opts.EmptyMessage)
+		return lipgloss.NewStyle().
+			Padding(0, 1).
+			Border(lipgloss.RoundedBorder()).
+			BorderForeground(theme.Border).
+			Foreground(theme.Muted).
+			Render(opts.EmptyMessage)
 	}
 
 	headerStyle := lipgloss.NewStyle().Foreground(theme.Headings).Bold(true)
