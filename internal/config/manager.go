@@ -134,7 +134,7 @@ type partialConfig struct {
 	ShowPermissions                 *bool `toml:"show_permissions"`
 	ShowBottomHeaderForLargeReturns *bool `toml:"show_bottom_header_for_large_returns"`
 	AlwaysShowBottomHeader          *bool `toml:"always_show_bottom_header"`
-	DirectoriesFirst                *bool `toml:"directories_first"`
+	DirectoryPosition               *string `toml:"directory_position"`
 }
 
 func readConfig(path string) (*partialConfig, error) {
@@ -197,7 +197,7 @@ func applyPartial(config *domain.Config, partial *partialConfig) {
 	if partial.ShowPermissions != nil { config.ShowPermissions = *partial.ShowPermissions }
 	if partial.ShowBottomHeaderForLargeReturns != nil { config.ShowBottomHeaderForLargeReturns = *partial.ShowBottomHeaderForLargeReturns }
 	if partial.AlwaysShowBottomHeader != nil { config.AlwaysShowBottomHeader = *partial.AlwaysShowBottomHeader }
-	if partial.DirectoriesFirst != nil { config.DirectoriesFirst = *partial.DirectoriesFirst }
+	if partial.DirectoryPosition != nil { config.DirectoryPosition = *partial.DirectoryPosition }
 }
 
 func expandPath(value string) string {

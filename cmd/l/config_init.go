@@ -83,7 +83,7 @@ func renderConfigTemplate(cfg domain.Config) string {
 	b.WriteString(fmt.Sprintf("show_permissions = %t\n", cfg.ShowPermissions))
 	b.WriteString(fmt.Sprintf("show_bottom_header_for_large_returns = %t\n", cfg.ShowBottomHeaderForLargeReturns))
 	b.WriteString(fmt.Sprintf("always_show_bottom_header = %t\n", cfg.AlwaysShowBottomHeader))
-	b.WriteString(fmt.Sprintf("directories_first = %t\n", cfg.DirectoriesFirst))
+	b.WriteString(fmt.Sprintf("directory_position = \"%s\"\n", cfg.DirectoryPosition))
 	b.WriteString("\n# Colors\n")
 	b.WriteString("# Colors support named, numeric, or hex values (ex: 7, 13, \"#ff8800\").\n")
 	b.WriteString(fmt.Sprintf("headings = %q\n", cfg.Headings))

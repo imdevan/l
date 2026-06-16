@@ -57,7 +57,7 @@ type Config struct {
 	ShowPermissions               bool `toml:"show_permissions"`
 	ShowBottomHeaderForLargeReturns bool `toml:"show_bottom_header_for_large_returns"`
 	AlwaysShowBottomHeader        bool `toml:"always_show_bottom_header"`
-	DirectoriesFirst              bool `toml:"directories_first"`
+	DirectoryPosition             string `toml:"directory_position"`
 
 	// Permissions color
 	PermissionsColor string `toml:"permissions_color"`
@@ -106,7 +106,7 @@ func DefaultConfig() Config {
 		ShowPermissions:                 false,
 		ShowBottomHeaderForLargeReturns: true,
 		AlwaysShowBottomHeader:          false,
-		DirectoriesFirst:                false,
+		DirectoryPosition:               "inline",
 
 		PermissionsColor: "08",
 	}

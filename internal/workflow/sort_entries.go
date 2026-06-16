@@ -54,13 +54,13 @@ func naturalLess(a, b string) bool {
 	return strings.ToLower(a) < strings.ToLower(b)
 }
 
-// DirsFirst stable-partitions entries so all directories precede files,
-// preserving relative order within each group.
-func DirsFirst(entries []domain.Entry) {
+// SortDirs stable-partitions entries by directory status.
+// If first is true, directories precede files; otherwise files precede directories.
+func SortDirs(entries []domain.Entry, first bool) {
 	sort.SliceStable(entries, func(i, j int) bool {
 		if entries[i].IsDir() == entries[j].IsDir() {
 			return false
 		}
-		return entries[i].IsDir()
+		return entries[i].IsDir() == first
 	})
 }

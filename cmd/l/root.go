@@ -195,8 +195,8 @@ func runListing(cmd *cobra.Command, opts *rootOptions, args []string) error {
 
 	workflow.SortEntries(entries, opts.sortKey(), opts.reverse)
 
-	if cfg.DirectoriesFirst && opts.sortKey() != workflow.SortType {
-		workflow.DirsFirst(entries)
+	if cfg.DirectoryPosition != "inline" && opts.sortKey() != workflow.SortType {
+		workflow.SortDirs(entries, cfg.DirectoryPosition == "top")
 	}
 
 	theme := ui.ThemeFromConfig(cfg)
