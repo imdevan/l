@@ -22,19 +22,20 @@ var (
 )
 
 type rootOptions struct {
-	configPath  string
+	localConfig string
 	showVersion bool
 	openConfig  bool
 	initConfig  bool
+	yes         bool
 	completion  string
 	sortByM     bool
-	sortByT    bool
-	sortByS    bool
-	sortByN    bool
-	reverse    bool
-	showHidden bool
-	filesOnly  bool
-	dirsOnly   bool
+	sortByT     bool
+	sortByS     bool
+	sortByN     bool
+	reverse     bool
+	showHidden  bool
+	filesOnly   bool
+	dirsOnly    bool
 }
 
 func (o *rootOptions) sortKey() workflow.SortKey {
@@ -79,9 +80,9 @@ Usage:
   l -a                show hidden files
 
 Config:
-  l -C                open config in editor
-  l --config-init     generate default config file
-  l -c <path>         use specific config file
+  l -c                open config in editor
+  l -C                generate default config file
+  l --local-config <path>  use specific config file
 
 Other:
   l -v                print version
@@ -96,7 +97,7 @@ Other:
 				return runCompletion(cmd, opts.completion)
 			}
 			if opts.initConfig {
-				return runConfigInit(cmd, &configInitOptions{force: false})
+				return runConfigInit(cmd, &configInitOptions{yes: opts.yes})
 			}
 			if opts.openConfig {
 				return runConfig(cmd)
@@ -105,10 +106,11 @@ Other:
 		},
 	}
 
-	cmd.Flags().StringVarP(&opts.configPath, "config", "c", "", "config file path")
+	cmd.Flags().StringVar(&opts.localConfig, "local-config", "", "config file path")
 	cmd.Flags().BoolVarP(&opts.showVersion, "version", "v", false, "print version information")
-	cmd.Flags().BoolVarP(&opts.openConfig, "Config", "C", false, "open config in editor")
-	cmd.Flags().BoolVar(&opts.initConfig, "config-init", false, "generate default config file")
+	cmd.Flags().BoolVarP(&opts.openConfig, "config", "c", false, "open config in editor")
+	cmd.Flags().BoolVarP(&opts.initConfig, "config-init", "C", false, "generate default config file")
+	cmd.Flags().BoolVarP(&opts.yes, "yes", "y", false, "skip overwrite confirmation")
 	cmd.Flags().StringVar(&opts.completion, "completion", "", "print shell completion script (bash|zsh|fish|powershell)")
 	cmd.Flags().BoolVarP(&opts.sortByM, "sort-modified", "m", false, "sort by modified (newest first)")
 	cmd.Flags().BoolVarP(&opts.sortByT, "sort-type", "t", false, "sort by type (dirs first)")
@@ -142,8 +144,8 @@ func runListing(cmd *cobra.Command, opts *rootOptions, args []string) error {
 
 	manager := config.NewManager(cwd)
 	var cfg domain.Config
-	if opts.configPath != "" {
-		cfg, err = manager.LoadWithOverride(opts.configPath)
+	if opts.localConfig != "" {
+		cfg, err = manager.LoadWithOverride(opts.localConfig)
 	} else {
 		cfg, err = manager.Load()
 	}

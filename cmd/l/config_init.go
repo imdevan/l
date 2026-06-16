@@ -11,11 +11,12 @@ import (
 	"l/internal/adapters/editor"
 	"l/internal/config"
 	"l/internal/domain"
+	"l/internal/ui"
 	"l/internal/utils"
 )
 
 type configInitOptions struct {
-	force        bool
+	yes          bool
 	openInEditor bool
 }
 
@@ -28,7 +29,7 @@ func newConfigInitCmd() *cobra.Command {
 			return runConfigInit(cmd, opts)
 		},
 	}
-	cmd.Flags().BoolVarP(&opts.force, "force", "f", false, "overwrite existing config")
+	cmd.Flags().BoolVarP(&opts.yes, "yes", "y", false, "skip overwrite confirmation")
 	cmd.Flags().BoolVarP(&opts.openInEditor, "editor", "e", false, "open config in editor after creation")
 	return cmd
 }
@@ -43,8 +44,21 @@ func runConfigInit(cmd *cobra.Command, opts *configInitOptions) error {
 	if err != nil {
 		return err
 	}
-	if exists && !opts.force {
-		return fmt.Errorf("config already exists at %s (use --force to overwrite)", utils.ConfigPathGlobal())
+	if exists && !opts.yes {
+		cfg, _ := manager.Load()
+		theme := ui.ThemeFromConfig(cfg)
+		confirmed, err := ui.PromptConfirmation(
+			"Overwrite config?",
+			fmt.Sprintf("Config already exists at %s", utils.ConfigPathGlobal()),
+			theme,
+		)
+		if err != nil {
+			return err
+		}
+		if !confirmed {
+			cmd.Println("Aborted.")
+			return nil
+		}
 	}
 	cfg := domain.DefaultConfig()
 	path := utils.ConfigPathGlobal()
