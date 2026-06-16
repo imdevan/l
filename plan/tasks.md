@@ -64,12 +64,7 @@ file_size = 08 # overrides other file colors if present
 ## Feature 3: Filtering & navigation
 
 - [x] 3.1 Optional positional arg as a filter query (substring match on name)
-- [ ] 3.2 Directory hop: if query exactly matches a directory name, `cd` into it and list
-  - [ ] 3.2.1 If query matches exactly one directory (fuzzy), hop into it
-  - [ ] 3.2.2 Two positional args: first is the directory to hop, second is the filter query inside that directory
-  - [ ] 3.2.3 Warn when second arg is ignored (ambiguous first arg, no hop occurred)
-- [x] 3.3 `-a` flag: show hidden files (dotfiles)
-
+- [x] 3.2 `-a` flag: show hidden files (dotfiles)
 ## Feature 4: Config
 
 - [x] 4.1 Wire new config fields into `internal/config`
@@ -89,9 +84,11 @@ file_size = 08 # overrides other file colors if present
 - [x] 5.4 `show_size` — toggle size column
 - [x] 5.5 `show_modified` — toggle modified column
 - [ ] 5.6 `show_bottom_header_for_large_returns` — repeat header at bottom when row count is large
+- show bottom header if list is larger than window height (+ space to account for first header and borders)
 - [ ] 5.7 `always_show_bottom_header` — always repeat header at bottom
 - [x] 5.8 `show_permissions` — show permissions column when enabled
 - [x] 5.9 `empty_dir_message` — message to show when directory is empty
+- [ ] 5.10 replace `directories_first` with `directory_position` — "top" | "bottom" | "inline" default: inline
 
 ### config booleans:
 show_header=true
@@ -105,9 +102,14 @@ show_size=true
 show_icons=true
 - if true render with icons for file type
 default_interactive=false
-## Feature 6: Interactive mode
 
-- [ ] 6.1 `/` key enters filter input; typing narrows the visible entries
-- [ ] 6.2 `default_interactive=true` config option drops into interactive mode by default
-- [ ] 6.3 Esc / Enter exits interactive mode
-  - notes: use Bubble Tea inline mode (no full-screen takeover). See existing `internal/ui/list.go` for reference pattern.
+
+## Feature 6: fix flags
+- [ ] 6.1 config: -c, --config
+- [ ] 6.2 config file path: --local-config, no short
+- [ ] 6.3 config-init: -C, --config-init
+  - remove force check. 
+  - instead use overwite confirmation from ui/confirmation
+  - l -C -y (--yes) should also be acceptable
+
+
