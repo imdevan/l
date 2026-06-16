@@ -86,7 +86,7 @@ file_size = 08 # overrides other file colors if present
 - [x] 5.6 `show_bottom_header_for_large_returns` — repeat header at bottom when row count is large
   - [x] show bottom header if list is larger than window height (+ space to account for first header and borders)
   - [x] only if show_header is also true
-- [ ] 5.7 `always_show_bottom_header` — always repeat header at bottom
+- [x] 5.7 `always_show_bottom_header` — always repeat header at bottom
 - [x] 5.8 `show_permissions` — show permissions column when enabled
 - [x] 5.9 `empty_dir_message` — message to show when directory is empty
 - [x] 5.10 replace `directories_first` with `directory_position` — "top" | "bottom" | "inline" default: inline
