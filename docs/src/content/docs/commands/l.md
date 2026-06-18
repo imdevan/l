@@ -3,23 +3,20 @@ title: l
 description: an ls replacement
 ---
 
-an ls replacement
+`l` is an incredibly simple tool with only one command `l`.
+
+`l` lists the contents of a directory in styled table.
 
 ## Usage
 
 ```bash
-l [alias]
-l [command]
+l [filter] [flags]
 ```
 
 ## Flags
 
 | Flag | Type | Description |
 |------|------|-------------|
-| `-v, --version` | bool | print version information |
-| `-c, --config` | bool | open config in editor |
-| `-C, --config-init` | bool | generate default config file |
-| `-y, --yes` | bool | skip overwrite confirmation |
 | `-m, --sort-modified` | bool | sort by modified (newest first) |
 | `-t, --sort-type` | bool | sort by type (dirs first) |
 | `-s, --sort-size` | bool | sort by size (largest first) |
@@ -28,6 +25,10 @@ l [command]
 | `-a, --all` | bool | show hidden files (dotfiles) |
 | `-f, --files` | bool | only show files |
 | `-d, --dirs` | bool | only show directories |
+| `-c, --config` | bool | open config in editor |
+| `-C, --config-init` | bool | generate default config file |
+| `-y, --yes` | bool | skip overwrite confirmation (only used for config-init) |
+| `-v, --version` | bool | print version information |
 
 ## Available Commands
 
