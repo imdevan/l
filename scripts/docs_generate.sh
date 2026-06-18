@@ -58,6 +58,9 @@ COMMANDS=""
 for ((i=0; i<num_cmds; i++)); do
   cmd_info=$(echo "$COMMANDS_JSON" | jq -c ".[$i]")
   cmd_name=$(echo "$cmd_info" | jq -r '.cmd_name')
+  if [ "$cmd_name" = "$PROJECT_NAME" ]; then
+    continue
+  fi
   COMMANDS="${COMMANDS}            { label: '${cmd_name}', link: '/commands/${cmd_name}' },
 "
 done
@@ -206,26 +209,22 @@ if [ -f "${CMD_DIR}/root.go" ]; then
   # For root command, use the description from package.toml
   ROOT_SHORT="${DESCRIPTION}"
 
-  # Extract godoc comment for root command (supports both // and /* */ style)
-  ROOT_GODOC=$(awk '
-    /^\/\*$/ {
-      in_block = 1
-      comment = ""
-      next
-    }
-    in_block && /\*\// {
-      in_block = 0
-      print comment
-      exit
-    }
-    in_block {
-      if (comment == "") {
-        comment = $0
-      } else {
-        comment = comment "\n" $0
-      }
-    }
-  ' "${CMD_DIR}/root.go")
+  # Extract root command details from parse_commands output
+  root_info=$(echo "$COMMANDS_JSON" | jq -c ".[] | select(.cmd_name == \"${PROJECT_NAME}\")" 2>/dev/null || true)
+  ROOT_GODOC=""
+  ROOT_USE=""
+  if [ -n "$root_info" ]; then
+    ROOT_GODOC=$(echo "$root_info" | jq -r '.doc')
+    ROOT_USE=$(echo "$root_info" | jq -r '.use')
+  fi
+
+  if [ -z "$ROOT_GODOC" ] || [ "$ROOT_GODOC" = "null" ]; then
+    ROOT_GODOC="${ROOT_SHORT}"
+  fi
+
+  if [ -z "$ROOT_USE" ] || [ "$ROOT_USE" = "null" ]; then
+    ROOT_USE="${PROJECT_NAME} [alias]\n${PROJECT_NAME} [command]"
+  fi
 
   cat >"${DOCS_CONTENT_DIR}/commands/${PROJECT_NAME}.md" <<EOF
 ---
@@ -233,23 +232,14 @@ title: ${PROJECT_NAME}
 description: ${ROOT_SHORT}
 ---
 
-${ROOT_SHORT}
+${ROOT_GODOC}
 
 ## Usage
 
 \`\`\`bash
-${PROJECT_NAME} [alias]
-${PROJECT_NAME} [command]
+${ROOT_USE}
 \`\`\`
 EOF
-
-  # Add godoc description if available
-  if [ -n "$ROOT_GODOC" ]; then
-    echo "" >>"${DOCS_CONTENT_DIR}/commands/${PROJECT_NAME}.md"
-    echo "## Description" >>"${DOCS_CONTENT_DIR}/commands/${PROJECT_NAME}.md"
-    echo "" >>"${DOCS_CONTENT_DIR}/commands/${PROJECT_NAME}.md"
-    echo "$ROOT_GODOC" >>"${DOCS_CONTENT_DIR}/commands/${PROJECT_NAME}.md"
-  fi
 
   # Extract flags from root.go
   root_flags=$(awk '
@@ -269,7 +259,7 @@ EOF
 
         type_col = tolower(flag_type)
 
-        print "| `" flag_col "` | " type_col " | " flag_desc " |"
+        print "| \`" flag_col "\` | " type_col " | " flag_desc " |"
       }
     }
   ' "${CMD_DIR}/root.go")
@@ -292,6 +282,9 @@ EOF
   for ((i=0; i<num_cmds; i++)); do
     cmd_info=$(echo "$COMMANDS_JSON" | jq -c ".[$i]")
     cmd_name=$(echo "$cmd_info" | jq -r '.cmd_name')
+    if [ "$cmd_name" = "$PROJECT_NAME" ]; then
+      continue
+    fi
     cmd_short=$(echo "$cmd_info" | jq -r '.short')
     if [ -z "$cmd_short" ] || [ "$cmd_short" = "null" ]; then
       cmd_short="$cmd_name"
@@ -314,6 +307,9 @@ for ((i=0; i<num_cmds; i++)); do
   cmd_info=$(echo "$COMMANDS_JSON" | jq -c ".[$i]")
   cmd_file=$(echo "$cmd_info" | jq -r '.go_file')
   cmd_name=$(echo "$cmd_info" | jq -r '.cmd_name')
+  if [ "$cmd_name" = "$PROJECT_NAME" ]; then
+    continue
+  fi
   cmd_use=$(echo "$cmd_info" | jq -r '.use')
   cmd_short=$(echo "$cmd_info" | jq -r '.short')
   cmd_godoc=$(echo "$cmd_info" | jq -r '.doc')
@@ -332,8 +328,8 @@ for ((i=0; i<num_cmds; i++)); do
     cmd_short="$cmd_display"
   fi
 
-  if [ "$cmd_godoc" = "null" ]; then
-    cmd_godoc=""
+  if [ -z "$cmd_godoc" ] || [ "$cmd_godoc" = "null" ]; then
+    cmd_godoc="${cmd_short}"
   fi
 
   # Generate command documentation
@@ -343,7 +339,7 @@ title: ${cmd_display}
 description: ${cmd_short}
 ---
 
-${cmd_short}
+${cmd_godoc}
 
 ## Usage
 
@@ -351,14 +347,6 @@ ${cmd_short}
 ${PROJECT_NAME} ${cmd_use}
 \`\`\`
 EOF
-
-  # Add godoc description if available
-  if [ -n "$cmd_godoc" ]; then
-    echo "" >>"${DOCS_CONTENT_DIR}/commands/${cmd_url}.md"
-    echo "## Description" >>"${DOCS_CONTENT_DIR}/commands/${cmd_url}.md"
-    echo "" >>"${DOCS_CONTENT_DIR}/commands/${cmd_url}.md"
-    echo "$cmd_godoc" >>"${DOCS_CONTENT_DIR}/commands/${cmd_url}.md"
-  fi
 
   # Extract flags from the command file
   flags=$(awk '

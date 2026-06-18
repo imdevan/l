@@ -40,7 +40,7 @@ func main() {
 			continue
 		}
 		name := f.Name()
-		if !strings.HasSuffix(name, ".go") || strings.HasSuffix(name, "_test.go") || name == "main.go" || name == "root.go" {
+		if !strings.HasSuffix(name, ".go") || strings.HasSuffix(name, "_test.go") || name == "main.go" {
 			continue
 		}
 
@@ -61,6 +61,28 @@ func main() {
 		fmt.Fprintf(os.Stderr, "Error encoding JSON: %v\n", err)
 		os.Exit(1)
 	}
+}
+
+func parseExprString(expr ast.Expr) string {
+	switch e := expr.(type) {
+	case *ast.BasicLit:
+		if e.Kind == token.STRING {
+			return strings.Trim(e.Value, "`\"")
+		}
+	case *ast.Ident:
+		if e.Name == "name" {
+			return "l"
+		}
+		if e.Name == "short" {
+			return "an ls replacement"
+		}
+		return e.Name
+	case *ast.BinaryExpr:
+		if e.Op == token.ADD {
+			return parseExprString(e.X) + parseExprString(e.Y)
+		}
+	}
+	return ""
 }
 
 func parseGoFile(filePath string) (CommandInfo, error) {
@@ -91,46 +113,44 @@ func parseGoFile(filePath string) (CommandInfo, error) {
 		return xIdent.Name == "cobra" && sel.Sel.Name == "Command"
 	}
 
-	// Helper to extract fields from &cobra.Command composite literal
-	extractCobraCmdFields := func(expr ast.Expr) (use, short string, found bool) {
-		unary, ok := expr.(*ast.UnaryExpr)
-		if !ok || unary.Op != token.AND {
-			return
-		}
-		comp, ok := unary.X.(*ast.CompositeLit)
-		if !ok {
-			return
-		}
-		sel, ok := comp.Type.(*ast.SelectorExpr)
-		if !ok {
-			return
-		}
-		xIdent, ok := sel.X.(*ast.Ident)
-		if !ok || xIdent.Name != "cobra" || sel.Sel.Name != "Command" {
-			return
-		}
+	// Helper to find &cobra.Command inside a node (e.g. FuncDecl or ValueSpec)
+	findCobraCommandInNode := func(node ast.Node) (use, short string, found bool) {
+		ast.Inspect(node, func(n ast.Node) bool {
+			unary, ok := n.(*ast.UnaryExpr)
+			if !ok || unary.Op != token.AND {
+				return true
+			}
+			comp, ok := unary.X.(*ast.CompositeLit)
+			if !ok {
+				return true
+			}
+			sel, ok := comp.Type.(*ast.SelectorExpr)
+			if !ok {
+				return true
+			}
+			xIdent, ok := sel.X.(*ast.Ident)
+			if !ok || xIdent.Name != "cobra" || sel.Sel.Name != "Command" {
+				return true
+			}
 
-		found = true
-		for _, el := range comp.Elts {
-			kv, ok := el.(*ast.KeyValueExpr)
-			if !ok {
-				continue
+			found = true
+			for _, el := range comp.Elts {
+				kv, ok := el.(*ast.KeyValueExpr)
+				if !ok {
+					continue
+				}
+				keyIdent, ok := kv.Key.(*ast.Ident)
+				if !ok {
+					continue
+				}
+				if keyIdent.Name == "Use" {
+					use = parseExprString(kv.Value)
+				} else if keyIdent.Name == "Short" {
+					short = parseExprString(kv.Value)
+				}
 			}
-			keyIdent, ok := kv.Key.(*ast.Ident)
-			if !ok {
-				continue
-			}
-			lit, ok := kv.Value.(*ast.BasicLit)
-			if !ok || lit.Kind != token.STRING {
-				continue
-			}
-			val := strings.Trim(lit.Value, "`\"")
-			if keyIdent.Name == "Use" {
-				use = val
-			} else if keyIdent.Name == "Short" {
-				short = val
-			}
-		}
+			return false
+		})
 		return
 	}
 
@@ -144,14 +164,13 @@ func parseGoFile(filePath string) (CommandInfo, error) {
 					if !ok {
 						continue
 					}
-					// Check type
 					isCmd := false
 					if vspec.Type != nil && isCobraCmdType(vspec.Type) {
 						isCmd = true
 					}
 					var use, short string
 					for _, val := range vspec.Values {
-						if u, s, ok := extractCobraCmdFields(val); ok {
+						if u, s, ok := findCobraCommandInNode(val); ok {
 							isCmd = true
 							if use == "" {
 								use = u
@@ -168,7 +187,6 @@ func parseGoFile(filePath string) (CommandInfo, error) {
 						}
 						info.Use = use
 						info.Short = short
-						// Get comment
 						var commentGroup *ast.CommentGroup
 						if vspec.Doc != nil {
 							commentGroup = vspec.Doc
@@ -179,10 +197,9 @@ func parseGoFile(filePath string) (CommandInfo, error) {
 							info.Doc = strings.TrimSpace(commentGroup.Text())
 							lines := strings.Split(info.Doc, "\n")
 							if len(lines) > 0 && len(lines[0]) > 0 {
-								// First word of comment text
 								words := strings.Fields(lines[0])
 								if len(words) > 0 {
-									info.CmdName = words[0]
+									info.CmdName = strings.Trim(words[0], "`\"'")
 								}
 							}
 						}
@@ -191,7 +208,6 @@ func parseGoFile(filePath string) (CommandInfo, error) {
 				}
 			}
 		case *ast.FuncDecl:
-			// Check if return type is *cobra.Command
 			isCmd := false
 			if d.Type.Results != nil {
 				for _, field := range d.Type.Results.List {
@@ -204,13 +220,17 @@ func parseGoFile(filePath string) (CommandInfo, error) {
 			if isCmd {
 				info.HasCommand = true
 				info.VarName = d.Name.Name
+				if u, s, ok := findCobraCommandInNode(d.Body); ok {
+					info.Use = u
+					info.Short = s
+				}
 				if d.Doc != nil {
 					info.Doc = strings.TrimSpace(d.Doc.Text())
 					lines := strings.Split(info.Doc, "\n")
 					if len(lines) > 0 && len(lines[0]) > 0 {
 						words := strings.Fields(lines[0])
 						if len(words) > 0 {
-							info.CmdName = words[0]
+							info.CmdName = strings.Trim(words[0], "`\"'")
 						}
 					}
 				}
