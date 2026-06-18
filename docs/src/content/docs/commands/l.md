@@ -15,6 +15,8 @@ l [filter] [flags]
 
 ## Flags
 
+### Sorting
+
 | Flag | Type | Description |
 |------|------|-------------|
 | `-m, --sort-modified` | bool | sort by modified (newest first) |
@@ -22,15 +24,28 @@ l [filter] [flags]
 | `-s, --sort-size` | bool | sort by size (largest first) |
 | `-n, --sort-name` | bool | sort by name (wins over other sort flags) |
 | `-r, --reverse` | bool | reverse sort order |
+
+### Filtering
+
+| Flag | Type | Description |
+|------|------|-------------|
 | `-a, --all` | bool | show hidden files (dotfiles) |
 | `-f, --files` | bool | only show files |
 | `-d, --dirs` | bool | only show directories |
+
+### Config
+
+| Flag | Type | Description |
+|------|------|-------------|
 | `-c, --config` | bool | open config in editor |
 | `-C, --config-init` | bool | generate default config file |
-| `-y, --yes` | bool | skip overwrite confirmation (only used for config-init) |
-| `-v, --version` | bool | print version information |
+| `--local-config` | string | config file path |
 
-## Available Commands
+### Metadata
+
+| Flag | Type | Description |
+|------|------|-------------|
+| `-v, --version` | bool | print version information |
 
 
 ## Source
