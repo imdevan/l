@@ -131,26 +131,28 @@ Based on version number in `internal/package/package.toml`
 
 ## Feature 8: update command docs
 
-- [ ] 8.1 command description from code docs
+- [x] 8.1 command description from code docs
   - Update in parse_commands scripts/parse_commands.go
   - [ ] 8.1.1 first section after title: pull from command doc comments
   - example cmd/l/root.go:65
-- [ ] 8.2 Usage
+- [x] 8.2 Usage
   - pull from command use prop example: cmd/l/root.go:70
 
 ## Feature 9: flag groups
-- [ ] 9.1 flag grouping
+- [x] 9.1 flag grouping
   - group flags in parse_commands scripts/parse_commands.go
   - leverage built in cobra features where possible
-  - [ ] 9.1.1 determine where flags are in each command
+  - [x] 9.1.1 determine where flags are in each command
     - see example of a group here: cmd/l/root.go:110
     - if necessary search for a comment query such as cmd/l/root.go:108 "// @flags"
       - if not necessary remove that line
-  - [ ] 9.1.2 render on command page in docs
-  - [ ] 9.1.3 group flags in the order they appear in the code "// @group:" as h3 tags
-  - [ ] 9.1.4 render group description and examples as h4 tags with p bodies for the contained content
+  - [x] 9.1.2 render on command page in docs
+  - [x] 9.1.3 group flags in the order they appear in the code "// @group:" as h3 tags
+  - [x] 9.1.4 render group description and examples as h4 tags with p bodies for the contained content
   - all in markdown
-  - [ ] 9.1.5 render flags in table in order they appear in the code
+  - [x] 9.1.5 render flags in table in order they appear in the code
+  - [x] 9.1.6 remove description title just render the description under the group header
+  - [x] 9.1.7 description and example should be rendered as multiline markdown copy
 
 
 
