@@ -31,9 +31,8 @@ l [command]
 
 ## Available Commands
 
-- [`completion`](/commands/completion) - 
-- [`config`](/commands/config) - View or edit configuration
-- [`config init`](/commands/config-init) - Generate a default config file
+- [`config`](/commands/config) - 
+- [`config init`](/commands/config-init) - 
 
 ## Source
 
