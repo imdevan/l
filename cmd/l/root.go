@@ -88,13 +88,6 @@ func newRootCmd() *cobra.Command {
 	// @flags
 
 	// @group: Sorting
-	// @description:
-	// 	Sort flags can be used conjunction with eachother
-	// 	Config commands are triggered by flag to leave space for a fitler argument to be passed to `l`.
-	// @example:
-	// 	```bash
-	// 	l -amr		# list all contents including hidden files by modified date in reverse order
-	// 	```
 	cmd.Flags().BoolVarP(&opts.sortByM, "sort-modified", "m", false, "sort by modified (newest first)")
 	cmd.Flags().BoolVarP(&opts.sortByT, "sort-type", "t", false, "sort by type (dirs first)")
 	cmd.Flags().BoolVarP(&opts.sortByS, "sort-size", "s", false, "sort by size (largest first)")
@@ -107,18 +100,13 @@ func newRootCmd() *cobra.Command {
 	cmd.Flags().BoolVarP(&opts.dirsOnly, "dirs", "d", false, "only show directories")
 
 	// @group: Config
-	// @description:
-	// 	Config commands are triggered by flag to leave space for a fitler argument to be passed to `l`.
-	// 	```bash
-	// 	l -amr		# list all contents including hidden files by modified date in reverse order
-	// 	```
 	cmd.Flags().BoolVarP(&opts.openConfig, "config", "c", false, "open config in editor")
 	cmd.Flags().BoolVarP(&opts.initConfig, "config-init", "C", false, "generate default config file")
-	cmd.Flags().BoolVarP(&opts.yes, "yes", "y", false, "skip overwrite confirmation (only used for config-init)")
 	cmd.Flags().StringVar(&opts.localConfig, "local-config", "", "config file path")
 
 	// @group: Metadata
 	cmd.Flags().BoolVarP(&opts.showVersion, "version", "v", false, "print version information")
+
 	return cmd
 }
 
