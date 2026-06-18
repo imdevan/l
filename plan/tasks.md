@@ -113,4 +113,12 @@ default_interactive=false
   - instead use overwite confirmation from ui/confirmation
   - l -C -y (--yes) should also be acceptable
 
+## Feature 7: publish pipeline
 
+I want to call `just publish` which should call `publish-homebrew` and 
+`publish-aur` which should themselves should call sub-scripts as necessary to deploy updates respective platforms. 
+Based on version number in `internal/package/package.toml`
+
+- [ ] 7.1 `publish-homebrew`
+- [ ] 7.2 `publish-aur`
+- [ ] 7.3 `just publish`
