@@ -27,7 +27,6 @@ type rootOptions struct {
 	openConfig  bool
 	initConfig  bool
 	yes         bool
-	completion  string
 	sortByM     bool
 	sortByT     bool
 	sortByS     bool
@@ -85,16 +84,12 @@ Config:
   l --local-config <path>  use specific config file
 
 Other:
-  l -v                print version
-  l --completion zsh  print shell completion script`,
+  l -v                print version`,
 		Args: cobra.ArbitraryArgs,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if opts.showVersion {
 				cmd.Printf("%s\n", resolvedVersion())
 				return nil
-			}
-			if opts.completion != "" {
-				return runCompletion(cmd, opts.completion)
 			}
 			if opts.initConfig {
 				return runConfigInit(cmd, &configInitOptions{yes: opts.yes})
@@ -111,7 +106,6 @@ Other:
 	cmd.Flags().BoolVarP(&opts.openConfig, "config", "c", false, "open config in editor")
 	cmd.Flags().BoolVarP(&opts.initConfig, "config-init", "C", false, "generate default config file")
 	cmd.Flags().BoolVarP(&opts.yes, "yes", "y", false, "skip overwrite confirmation")
-	cmd.Flags().StringVar(&opts.completion, "completion", "", "print shell completion script (bash|zsh|fish|powershell)")
 	cmd.Flags().BoolVarP(&opts.sortByM, "sort-modified", "m", false, "sort by modified (newest first)")
 	cmd.Flags().BoolVarP(&opts.sortByT, "sort-type", "t", false, "sort by type (dirs first)")
 	cmd.Flags().BoolVarP(&opts.sortByS, "sort-size", "s", false, "sort by size (largest first)")
