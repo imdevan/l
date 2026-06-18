@@ -115,6 +115,12 @@ default_interactive=false
 
 ## Feature 7: publish pipeline
 
+## Context
+
+Currently, init-homebrew-tap & init-aur-repo init both repos, but then the rest is self managed.
+
+## goal
+
 I want to call `just publish` which should call `publish-homebrew` and 
 `publish-aur` which should themselves should call sub-scripts as necessary to deploy updates respective platforms. 
 Based on version number in `internal/package/package.toml`
