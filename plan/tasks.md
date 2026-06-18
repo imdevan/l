@@ -125,6 +125,6 @@ I want to call `just publish` which should call `publish-homebrew` and
 `publish-aur` which should themselves should call sub-scripts as necessary to deploy updates respective platforms. 
 Based on version number in `internal/package/package.toml`
 
-- [ ] 7.1 `publish-homebrew`
-- [ ] 7.2 `publish-aur`
-- [ ] 7.3 `just publish`
+- [x] 7.1 `publish-homebrew`
+- [x] 7.2 `publish-aur`
+- [x] 7.3 `just publish`

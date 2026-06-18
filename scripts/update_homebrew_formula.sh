@@ -10,7 +10,7 @@ PACKAGE_TOML="${ROOT_DIR}/internal/package/package.toml"
 
 VERSION="${1:-}"
 if [[ -z "${VERSION}" ]]; then
-	VERSION=$(parse_toml_key "${PACKAGE_TOML}" "version")
+  VERSION=$(parse_toml_key "${PACKAGE_TOML}" "version")
 fi
 
 # Remove 'v' prefix if present
@@ -30,9 +30,9 @@ TAP_DIR="${ROOT_DIR}/homebrew-${PACKAGE_NAME}"
 FORMULA_PATH="${TAP_DIR}/Formula/${PACKAGE_NAME}.rb"
 
 if [[ ! -d "${TAP_DIR}" ]]; then
-	echo "❌ Homebrew tap not found at: ${TAP_DIR}"
-	echo "Run 'just init-homebrew-tap' first"
-	exit 1
+  echo "❌ Homebrew tap not found at: ${TAP_DIR}"
+  echo "Run 'just init-homebrew-tap' first"
+  exit 1
 fi
 
 # Download tarball and calculate SHA256
@@ -40,8 +40,8 @@ TARBALL_URL="${REPO_URL}archive/refs/tags/v${VERSION}.tar.gz"
 echo "📥 Downloading release tarball..."
 
 if ! SHA256=$(download_and_hash "${TARBALL_URL}"); then
-	echo "❌ Failed to download: ${TARBALL_URL}"
-	exit 1
+  echo "❌ Failed to download: ${TARBALL_URL}"
+  exit 1
 fi
 
 echo "✅ SHA256: ${SHA256}"

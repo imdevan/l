@@ -106,3 +106,13 @@ deploy-homebrew VERSION="":
 deploy-all VERSION="":
 	./scripts/deploy_all.sh {{VERSION}}
 
+publish-homebrew VERSION="":
+	./scripts/deploy_homebrew.sh {{VERSION}}
+
+publish-aur VERSION="":
+	./scripts/deploy_aur.sh {{VERSION}}
+
+publish VERSION="":
+	@just publish-homebrew {{VERSION}}
+	@just publish-aur {{VERSION}}
+
