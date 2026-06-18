@@ -33,7 +33,10 @@ if ! git remote get-url origin &>/dev/null; then
 	git remote add origin "ssh://aur@aur.archlinux.org/${PACKAGE_NAME}.git"
 fi
 
-GIT_SSH_COMMAND="${SSH_CMD}" git add PKGBUILD .SRCINFO
+GIT_SSH_COMMAND="${SSH_CMD}" git add PKGBUILD
+if [ -f .SRCINFO ]; then
+	GIT_SSH_COMMAND="${SSH_CMD}" git add .SRCINFO
+fi
 
 # Only commit if there are staged changes
 if ! git diff --cached --quiet; then
