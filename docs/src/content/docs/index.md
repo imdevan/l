@@ -58,7 +58,7 @@ l -c            # open or init config
 l --config-init # init or reset config
 ```
 
-See [CONFIG.md](./CONFIG.md) for all options, or [example-config.toml](./example-config.toml) for a ready-to-copy example.
+See [/contributing](/contributing) for more info.
 
 ## Installation
 
@@ -70,23 +70,12 @@ brew install imdevan/l/l
 yay -S l
 ```
 
-See [INSTALL.md](./INSTALL.md) for more information.
+See [install](/install) for more info.
 
 ## Requirements
 
-- Nerd Font — for icons (optional, disable with `show_icons = false`)
+- [Nerd Font](https://www.nerdfonts.com/) — for icons (optional, disable with `show_icons = false`)
 
 # Development
 
-See [CONTRIBUTING.md](./CONTRIBUTING.md) for more information.
-
-## Just scripts
-
-```bash
-just build           # Build binary
-just build-run       # Build and run
-just test            # Run tests
-just install         # Install to /usr/local/bin
-just watch           # Rebuild on file changes
-```
-
+See [/contributing](/contributing) for more information.
