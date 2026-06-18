@@ -87,7 +87,7 @@ Config:
 Other:
   l -v                print version
   l --completion zsh  print shell completion script`,
-		Args:  cobra.ArbitraryArgs,
+		Args: cobra.ArbitraryArgs,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if opts.showVersion {
 				cmd.Printf("%s\n", resolvedVersion())

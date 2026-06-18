@@ -20,20 +20,6 @@ type configInitOptions struct {
 	openInEditor bool
 }
 
-func newConfigInitCmd() *cobra.Command {
-	opts := &configInitOptions{}
-	cmd := &cobra.Command{
-		Use:   "init",
-		Short: "Generate a default config file",
-		RunE: func(cmd *cobra.Command, args []string) error {
-			return runConfigInit(cmd, opts)
-		},
-	}
-	cmd.Flags().BoolVarP(&opts.yes, "yes", "y", false, "skip overwrite confirmation")
-	cmd.Flags().BoolVarP(&opts.openInEditor, "editor", "e", false, "open config in editor after creation")
-	return cmd
-}
-
 func runConfigInit(cmd *cobra.Command, opts *configInitOptions) error {
 	cwd, err := os.Getwd()
 	if err != nil {

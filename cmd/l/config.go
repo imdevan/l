@@ -12,19 +12,6 @@ import (
 	"l/internal/utils"
 )
 
-func newConfigCmd() *cobra.Command {
-	cmd := &cobra.Command{
-		Use:   "config",
-		Short: "View or edit configuration",
-		Args:  cobra.NoArgs,
-		RunE: func(cmd *cobra.Command, args []string) error {
-			return runConfig(cmd)
-		},
-	}
-	cmd.AddCommand(newConfigInitCmd())
-	return cmd
-}
-
 func runConfig(cmd *cobra.Command) error {
 	cwd, err := os.Getwd()
 	if err != nil {
