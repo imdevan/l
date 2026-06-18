@@ -31,8 +31,6 @@ l [command]
 
 ## Available Commands
 
-- [`config`](/commands/config) - 
-- [`config init`](/commands/config-init) - 
 
 ## Source
 

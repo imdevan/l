@@ -37,8 +37,6 @@ const sidebar = [
     label: 'Commands',
     items: [
       { label: 'l', link: '/commands/l' },
-            { label: 'config', link: '/commands/config' },
-            { label: 'config init', link: '/commands/config-init' },
     ],
   },
   {
