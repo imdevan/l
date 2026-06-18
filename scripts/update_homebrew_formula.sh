@@ -100,7 +100,9 @@ class ${CLASS_NAME} < Formula
   end
 
   def install
-    bin.install "${NAME}"
+    binary = OS.mac? ? "${NAME}-darwin-" : "${NAME}-linux-"
+    binary += Hardware::CPU.intel? ? "amd64" : "arm64"
+    bin.install binary => "${NAME}"
   end
 
   test do
