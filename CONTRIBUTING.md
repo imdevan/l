@@ -3,8 +3,8 @@
 ## Setup
 
 ```bash
-gh repo fork imdevan/go-cli-template --clone
-cd go-cli-template
+gh repo fork imdevan/l --clone
+cd l
 ```
 
 ## Development
