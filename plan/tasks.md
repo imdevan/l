@@ -133,7 +133,7 @@ Based on version number in `internal/package/package.toml`
 
 - [x] 8.1 command description from code docs
   - Update in parse_commands scripts/parse_commands.go
-  - [ ] 8.1.1 first section after title: pull from command doc comments
+  - [x] 8.1.1 first section after title: pull from command doc comments
   - example cmd/l/root.go:65
 - [x] 8.2 Usage
   - pull from command use prop example: cmd/l/root.go:70
@@ -153,10 +153,3 @@ Based on version number in `internal/package/package.toml`
   - [x] 9.1.5 render flags in table in order they appear in the code
   - [x] 9.1.6 remove description title just render the description under the group header
   - [x] 9.1.7 description and example should be rendered as multiline markdown copy
-
-
-
-- [ ] 9.2 define go based flag group object here: cmd/l/root.go:108
-- [ ] 9.3 add annotations to flags with "group": flagGroup here: cmd/l/root.go:110
-- [ ] 9.4 group flags in parse_commands documentation on usage page here: scripts/parse_commands.go
-
