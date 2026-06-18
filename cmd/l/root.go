@@ -62,29 +62,13 @@ func Execute() error {
 	return rootCmd.Execute()
 }
 
+// `l` is an incredibly simple tool with only one command `l`.
+//
+// `l` lists the contents of a directory in styled table.
 func newRootCmd() *cobra.Command {
 	opts := &rootOptions{}
 	cmd := &cobra.Command{
-		Use:   name + " [filter]",
-		Short: short,
-		Long: `l — a styled directory listing tool
-
-Usage:
-  l [filter]          list current directory, optionally filtered by name
-  l -m                sort by modified (newest first)
-  l -s                sort by size (largest first)
-  l -t                sort by type (dirs first)
-  l -n                sort by name
-  l -r                reverse sort order
-  l -a                show hidden files
-
-Config:
-  l -c                open config in editor
-  l -C                generate default config file
-  l --local-config <path>  use specific config file
-
-Other:
-  l -v                print version`,
+		Use:  name + " [filter] [flags]",
 		Args: cobra.ArbitraryArgs,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if opts.showVersion {
@@ -101,20 +85,40 @@ Other:
 		},
 	}
 
-	cmd.Flags().StringVar(&opts.localConfig, "local-config", "", "config file path")
-	cmd.Flags().BoolVarP(&opts.showVersion, "version", "v", false, "print version information")
-	cmd.Flags().BoolVarP(&opts.openConfig, "config", "c", false, "open config in editor")
-	cmd.Flags().BoolVarP(&opts.initConfig, "config-init", "C", false, "generate default config file")
-	cmd.Flags().BoolVarP(&opts.yes, "yes", "y", false, "skip overwrite confirmation")
+	// @flags
+
+	// @group: Sorting
+	// @description:
+	// 	Sort flags can be used conjunction with eachother
+	// 	Config commands are triggered by flag to leave space for a fitler argument to be passed to `l`.
+	// @example:
+	// 	```bash
+	// 	l -amr		# list all contents including hidden files by modified date in reverse order
+	// 	```
 	cmd.Flags().BoolVarP(&opts.sortByM, "sort-modified", "m", false, "sort by modified (newest first)")
 	cmd.Flags().BoolVarP(&opts.sortByT, "sort-type", "t", false, "sort by type (dirs first)")
 	cmd.Flags().BoolVarP(&opts.sortByS, "sort-size", "s", false, "sort by size (largest first)")
 	cmd.Flags().BoolVarP(&opts.sortByN, "sort-name", "n", false, "sort by name (wins over other sort flags)")
 	cmd.Flags().BoolVarP(&opts.reverse, "reverse", "r", false, "reverse sort order")
+
+	// @group: Filtering
 	cmd.Flags().BoolVarP(&opts.showHidden, "all", "a", false, "show hidden files (dotfiles)")
 	cmd.Flags().BoolVarP(&opts.filesOnly, "files", "f", false, "only show files")
 	cmd.Flags().BoolVarP(&opts.dirsOnly, "dirs", "d", false, "only show directories")
 
+	// @group: Config
+	// @description:
+	// 	Config commands are triggered by flag to leave space for a fitler argument to be passed to `l`.
+	// 	```bash
+	// 	l -amr		# list all contents including hidden files by modified date in reverse order
+	// 	```
+	cmd.Flags().BoolVarP(&opts.openConfig, "config", "c", false, "open config in editor")
+	cmd.Flags().BoolVarP(&opts.initConfig, "config-init", "C", false, "generate default config file")
+	cmd.Flags().BoolVarP(&opts.yes, "yes", "y", false, "skip overwrite confirmation (only used for config-init)")
+	cmd.Flags().StringVar(&opts.localConfig, "local-config", "", "config file path")
+
+	// @group: Metadata
+	cmd.Flags().BoolVarP(&opts.showVersion, "version", "v", false, "print version information")
 	return cmd
 }
 
