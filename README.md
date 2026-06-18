@@ -18,7 +18,7 @@ Inspired by Nushell ls function. Re-implemented in Go, using cobra + lipgloss.
 ## Usage
 
 ```
-l [filter] [flags] list current directory, optionally filtered by name
+l [filter] [flags]  # list current directory, optionally filtered by name
 
 Sorting:
   -m                sort by modified (newest first)
@@ -46,40 +46,35 @@ Other:
 
 ## Configuration
 
-Configuration is stored at `$XDG_CONFIG_HOME/l/config.toml` (typically `~/.config/l/config.toml`).
-
-Generate a config file with defaults:
-
 ```bash
-l --config-init
+l -c            # open or init config
 ```
 
-Open config in your editor:
-
 ```bash
-l -C
+l --config-init # init or reset config
 ```
 
 See [CONFIG.md](./CONFIG.md) for all options, or [example-config.toml](./example-config.toml) for a ready-to-copy example.
 
 ## Installation
 
-See [INSTALL.md](./INSTALL.md).
+```bash
+# homebrew
+brew install imdevan/l/l
+
+# or aur
+yay -S l
+```
+
+See [INSTALL.md](./INSTALL.md) for more information.
 
 ## Requirements
 
-- [Go](https://go.dev/) — build from source
-- [Just](https://just.systems/) — run scripts
 - Nerd Font — for icons (optional, disable with `show_icons = false`)
 
 # Development
-## Quick start
 
-```bash
-gh repo clone imdevan/l
-cd l
-just build-run
-```
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for more information.
 
 ## Just scripts
 
