@@ -113,6 +113,7 @@ publish-aur VERSION="":
 	./scripts/deploy_aur.sh {{VERSION}}
 
 publish VERSION="":
+	@just tag {{VERSION}}
 	@just publish-homebrew {{VERSION}}
 	@just publish-aur {{VERSION}}
 
