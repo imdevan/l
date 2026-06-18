@@ -58,7 +58,7 @@ l -c            # open or init config
 l --config-init # init or reset config
 ```
 
-See [/contributing](/contributing) for more info.
+See [contributing](https://devan.gg/l/contributing/) for more info.
 
 ## Installation
 
@@ -70,7 +70,7 @@ brew install imdevan/l/l
 yay -S l
 ```
 
-See [install](/install) for more info.
+See [install](https://devan.gg/l/install/) for more info.
 
 ## Requirements
 
@@ -78,4 +78,4 @@ See [install](/install) for more info.
 
 # Development
 
-See [/contributing](/contributing) for more information.
+See [development](https://devan.gg/l/development/) for more information.
