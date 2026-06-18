@@ -16,9 +16,10 @@ l [command]
 
 | Flag | Type | Description |
 |------|------|-------------|
-| `-c, --config` | string | config file path |
 | `-v, --version` | bool | print version information |
-| `-C, --Config` | bool | open config in editor |
+| `-c, --config` | bool | open config in editor |
+| `-C, --config-init` | bool | generate default config file |
+| `-y, --yes` | bool | skip overwrite confirmation |
 | `-m, --sort-modified` | bool | sort by modified (newest first) |
 | `-t, --sort-type` | bool | sort by type (dirs first) |
 | `-s, --sort-size` | bool | sort by size (largest first) |

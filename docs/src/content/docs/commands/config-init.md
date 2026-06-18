@@ -15,7 +15,7 @@ l init
 
 | Flag | Type | Description |
 |------|------|-------------|
-| `-f, --force` | bool | overwrite existing config |
+| `-y, --yes` | bool | skip overwrite confirmation |
 | `-e, --editor` | bool | open config in editor after creation |
 
 ## Source
