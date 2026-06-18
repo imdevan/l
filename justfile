@@ -114,6 +114,8 @@ publish-aur VERSION="":
 
 publish VERSION="":
 	@just tag {{VERSION}}
+	@just github-release {{VERSION}}
+	@just release {{VERSION}}
 	@just publish-homebrew {{VERSION}}
 	@just publish-aur {{VERSION}}
 
