@@ -58,11 +58,15 @@ See [contributing](https://devan.gg/l/contributing/) for more info.
 
 ## Installation
 
-```bash
-# homebrew
-brew install imdevan/l/l
+### Homebrew
 
-# or aur
+```bash
+brew install imdevan/l/l
+```
+
+### AUR
+
+```bash
 yay -S l
 ```
 
