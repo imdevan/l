@@ -73,6 +73,7 @@ func renderConfigTemplate(cfg domain.Config) string {
 	b.WriteString(fmt.Sprintf("interactive_default = %t\n", cfg.InteractiveDefault))
 	b.WriteString("# default_flags = \"\"\n")
 	b.WriteString("# empty_dir_message = \"empty dir\"\n")
+	b.WriteString("# margin = \"\"  # \"#\" sets left margin; \"#,#\" sets left and top margin\n")
 	b.WriteString("\n# Display options\n")
 	b.WriteString(fmt.Sprintf("show_header = %t\n", cfg.ShowHeader))
 	b.WriteString(fmt.Sprintf("show_border = %t\n", cfg.ShowBorder))

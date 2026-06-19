@@ -25,6 +25,8 @@ type TableOptions struct {
 	ShowBottomHeaderForLargeReturns bool
 	AlwaysShowBottomHeader          bool
 	EmptyMessage                    string
+	MarginTop                       int
+	MarginLeft                      int
 }
 
 // largeReturnThreshold is the row count at which the bottom header appears.
@@ -84,18 +86,20 @@ func TableOptionsFromConfig(cfg domain.Config) TableOptions {
 	if strings.TrimSpace(cfg.EmptyDirMessage) != "" {
 		opts.EmptyMessage = cfg.EmptyDirMessage
 	}
+	opts.MarginTop, opts.MarginLeft = domain.ParseMargin(cfg.Margin)
 	return opts
 }
 
 // RenderTable renders entries as a styled lipgloss table.
 func RenderTable(entries []domain.Entry, theme Theme, opts TableOptions) string {
 	if len(entries) == 0 {
-		return lipgloss.NewStyle().
+		out := lipgloss.NewStyle().
 			Padding(0, 1).
 			Border(lipgloss.RoundedBorder()).
 			BorderForeground(theme.Border).
 			Foreground(theme.Muted).
 			Render(opts.EmptyMessage)
+		return applyMargin(out, opts)
 	}
 
 	headerStyle := lipgloss.NewStyle().Foreground(theme.Headings).Bold(true)
@@ -182,7 +186,14 @@ func RenderTable(entries []domain.Entry, theme Theme, opts TableOptions) string 
 		sb.WriteString(borderLine("╰", "┴", "╯", "─"))
 	}
 
-	return sb.String()
+	return applyMargin(sb.String(), opts)
+}
+
+func applyMargin(s string, opts TableOptions) string {
+	if opts.MarginTop == 0 && opts.MarginLeft == 0 {
+		return s
+	}
+	return lipgloss.NewStyle().MarginTop(opts.MarginTop).MarginLeft(opts.MarginLeft).Render(s)
 }
 
 func buildHeaders(opts TableOptions) []string {

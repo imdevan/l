@@ -3,6 +3,8 @@ package domain
 import (
 	"os"
 	"path/filepath"
+	"strconv"
+	"strings"
 )
 
 // Config describes the resolved configuration.
@@ -40,6 +42,9 @@ type Config struct {
 	FileLg   string `toml:"file_lg"`
 	FileXl   string `toml:"file_xl"`
 	FileSize string `toml:"file_size"` // overrides all size colors when set
+
+	// Margin: "#" sets top margin; "#,#" sets top and left margin
+	Margin string `toml:"margin"`
 
 	// Default CLI flags applied before user-supplied flags
 	DefaultFlags string `toml:"default_flags"`
@@ -110,6 +115,25 @@ func DefaultConfig() Config {
 
 		PermissionsColor: "08",
 	}
+}
+
+// ParseMargin parses a margin string into (top, left) values.
+// Format: "#" → left=# top=0; "#,#" → left=first top=second.
+func ParseMargin(s string) (top, left int) {
+	s = strings.TrimSpace(s)
+	if s == "" {
+		return 0, 0
+	}
+	parts := strings.SplitN(s, ",", 2)
+	if v, err := strconv.Atoi(strings.TrimSpace(parts[0])); err == nil && v >= 0 {
+		left = v
+	}
+	if len(parts) == 2 {
+		if v, err := strconv.Atoi(strings.TrimSpace(parts[1])); err == nil && v >= 0 {
+			top = v
+		}
+	}
+	return top, left
 }
 
 func xdgHome(envKey, fallbackSuffix string) string {

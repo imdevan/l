@@ -123,6 +123,7 @@ type partialConfig struct {
 	// Behavior
 	DefaultFlags    *string `toml:"default_flags"`
 	EmptyDirMessage *string `toml:"empty_dir_message"`
+	Margin          *string `toml:"margin"`
 
 	// Display options
 	ShowHeader                      *bool `toml:"show_header"`
@@ -187,6 +188,7 @@ func applyPartial(config *domain.Config, partial *partialConfig) {
 
 	if partial.DefaultFlags != nil { config.DefaultFlags = *partial.DefaultFlags }
 	if partial.EmptyDirMessage != nil { config.EmptyDirMessage = *partial.EmptyDirMessage }
+	if partial.Margin != nil { config.Margin = *partial.Margin }
 
 	if partial.ShowHeader != nil { config.ShowHeader = *partial.ShowHeader }
 	if partial.ShowBorder != nil { config.ShowBorder = *partial.ShowBorder }
