@@ -69,8 +69,15 @@ file_size = 08 # overrides other file colors if present
 
 - [x] 4.1 Wire new config fields into `internal/config`
   - notes: all fields listed in plan/simple.md under `# config`
-- [x] 4.2 Add config fields to `example-config.toml` and `config_init.go`
-- [x] 4.3 `default_flags` string: parsed and applied as if passed on the CLI
+- [ ] 4.2 add margin config option 
+  - valid args: # | #,# if only 1 number
+  - single number: vertical margin
+  - tuple: horizontal and vertical margin. 
+  - technically I only want top and left margins
+  - wrap table and or empty_dir_message in lipgloss margin
+  - [ ] 4.2.1 update config default, and docs
+- [x] 4.3 Add config fields to `example-config.toml` and `config_init.go`
+- [x] 4.4 `default_flags` string: parsed and applied as if passed on the CLI
 <!-- - [x] 4.4 `empty_dir_message` string: returned if directory is empty. default: "empty dir" -->
 
 ## Feature 5: Display options (config-driven)
