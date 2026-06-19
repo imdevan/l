@@ -5,6 +5,7 @@ editor = "nvim"
 interactive_default = false
 # default_flags = "-m"
 # empty_dir_message = "empty dir"
+# margin = "1"  # "#" sets left margin; "#,#" sets left and top margin
 
 # Display options
 show_header = true
@@ -34,19 +35,26 @@ border = "08"
 # Listing colors
 dir_color = "12"
 file_color = "07"
-type_color = "08"
-permissions_color = "08"
+# type_color = ""  # overrides dir_color/file_color for the type column when set
+# permissions_color = ""  # overrides all perm colors when set (replaces perm_read/write/exec/none/dir)
+perm_read_color = "03"
+perm_write_color = "01"
+perm_exec_color = "02"
+perm_none_color = "08"
+perm_dir_color = "12"
+# permissions_color = ""  # overrides all perm colors when set
 
-# Modified age colors (mod_newer < 1h, mod_new < 1d, mod_old < 1w, mod_older < 4w)
+# Modified age colors (mod_newer < 1h, mod_new < 1d, mod_old < 1w, mod_older < 4w, mod_oldest >= 4w)
 mod_newer_color = "10"
 mod_new_color = "02"
 mod_old_color = "03"
-mod_older_color = "04"
-# modified_color = "08"  # overrides all mod colors when set
+mod_older_color = "09"
+mod_oldest_color = "01"
+# modified_color = ""  # overrides all mod colors when set
 
-# File size colors (file_sm < 10KB, file_md < 100KB, file_lg < 1MB, file_xl >= 1MB)
+# File size colors (file_sm < 100KB, file_md < 1MB, file_lg < 1GB, file_xl >= 1GB)
 file_sm = "10"
 file_md = "02"
 file_lg = "03"
-file_xl = "04"
+file_xl = "01"
 # file_size = "08"  # overrides all size colors when set
