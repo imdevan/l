@@ -58,7 +58,7 @@ l -c            # open or init config
 l --config-init # init or reset config
 ```
 
-See [contributing](https://devan.gg/l/contributing/) for more info.
+See [configuration](https://devan.gg/l/configuration/) for more info.
 
 ## Installation
 
@@ -82,4 +82,4 @@ See [install](https://devan.gg/l/install/) for more info.
 
 # Development
 
-See [development](https://devan.gg/l/development/) for more information.
+See [contributing](https://devan.gg/l/contributing/) for more info.
