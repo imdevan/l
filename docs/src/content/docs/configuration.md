@@ -4,9 +4,11 @@ description: Configuration options for l
 ---
 
 
-Config file location: `$XDG_CONFIG_HOME/l/config.toml` (typically `~/.config/l/config.toml`)
+Config file location: `~/.config/l/config.toml` 
 
-Generate with defaults:
+(if you can't find  the config check `$XDG_CONFIG_HOME/l/config.toml`)
+
+## Generate with defaults
 
 ```bash
 l --config-init
