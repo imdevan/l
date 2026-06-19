@@ -17,31 +17,29 @@ Inspired by Nushell ls function. Re-implemented in Go, using cobra + lipgloss.
 
 ## Usage
 
+```bash
+$ l -h
+
+Usage:
+  l [filter] [flags]
+
+Flags:
+  -a, --all                   show hidden files (dotfiles)
+  -c, --config                open config in editor
+  -C, --config-init           generate default config file
+  -d, --dirs                  only show directories
+  -f, --files                 only show files
+  -h, --help                  help for l
+      --local-config string   config file path
+  -r, --reverse               reverse sort order
+  -m, --sort-modified         sort by modified (newest first)
+  -n, --sort-name             sort by name (wins over other sort flags)
+  -s, --sort-size             sort by size (largest first)
+  -t, --sort-type             sort by type (dirs first)
+  -v, --version               print version information
 ```
-l [filter] [flags]  # list current directory, optionally filtered by name
 
-Sorting:
-  -m                sort by modified (newest first)
-  -s                sort by size (largest first)
-  -t                sort by type (dirs first)
-  -n                sort by name (wins over other sort flags)
-  -r                reverse sort order
-
-Filtering:
-  -a                show hidden files (dotfiles)
-  -f                only show files
-  -d                only show directories
-
-Config:
-  -C                open config in editor
-  --config-init     generate default config file
-  -c <path>         use a specific config file
-
-Other:
-  -v                print version
-  --completion zsh  print shell completion script (bash|zsh|fish|powershell)
-  -h                help
-```
+See [command](https://devan.gg/l/commands/l/) for more info.
 
 
 ## Configuration
