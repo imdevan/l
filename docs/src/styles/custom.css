@@ -1,17 +1,36 @@
-/* Custom styles for go-cli-template docs */
-
+/* Catppuccin Latte (light) */
 :root {
-  --sl-color-accent-low: #1a2332;
-  --sl-color-accent: #4a9eff;
-  --sl-color-accent-high: #b3d9ff;
+  --sl-color-accent-low:  #e6e9ef; /* Mantle */
+  --sl-color-accent:      #1e66f5; /* Blue */
+  --sl-color-accent-high: #7287fd; /* Lavender */
+
+  --sl-color-white:       #4c4f69; /* Text */
+  --sl-color-gray-1:      #5c5f77; /* Subtext 1 */
+  --sl-color-gray-2:      #6c6f85; /* Subtext 0 */
+  --sl-color-gray-3:      #9ca0b0; /* Overlay 0 */
+  --sl-color-gray-4:      #bcc0cc; /* Surface 1 */
+  --sl-color-gray-5:      #ccd0da; /* Surface 0 */
+  --sl-color-gray-6:      #e6e9ef; /* Mantle */
+  --sl-color-black:       #eff1f5; /* Base */
 }
 
-/* Code block improvements */
+/* Catppuccin Frappé (dark) */
+[data-theme='dark'] {
+  --sl-color-accent-low:  #363a4f; /* Surface 0 */
+  --sl-color-accent:      #8aadf4; /* Blue */
+  --sl-color-accent-high: #b7bdf8; /* Lavender */
+
+  --sl-color-white:       #cad3f5; /* Text */
+  --sl-color-gray-1:      #b8c0e0; /* Subtext 1 */
+  --sl-color-gray-2:      #a5adcb; /* Subtext 0 */
+  --sl-color-gray-3:      #6e738d; /* Overlay 0 */
+  --sl-color-gray-4:      #494d64; /* Surface 1 */
+  --sl-color-gray-5:      #363a4f; /* Surface 0 */
+  --sl-color-gray-6:      #1e2030; /* Mantle */
+  --sl-color-black:       #232634; /* Base */
+  /* --sl-color-black:       #24273a; /* Base */ */
+}
+
 pre {
   border-radius: 8px;
-}
-
-/* Better spacing for API docs */
-.api-section {
-  margin-top: 2rem;
 }

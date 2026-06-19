@@ -18,7 +18,7 @@ export default defineConfig({
       },
       customCss: ['./src/styles/custom.css'],
       expressiveCode: {
-        themes: ['material-theme-lighter', 'material-theme-darker'],
+        themes: ['catppuccin-latte', 'catppuccin-frappe'],
       },
       sidebar: sidebar,
     }),
