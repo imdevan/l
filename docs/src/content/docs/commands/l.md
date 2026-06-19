@@ -3,7 +3,7 @@ title: l
 description: an ls replacement
 ---
 
-`l` is an incredibly simple tool with only one command `l`.
+`l` is an incredibly simple tool with only one command: `l`.
 
 `l` lists the contents of a directory in styled table.
 
@@ -32,6 +32,7 @@ l [filter] [flags]
 | `-a, --all` | bool | show hidden files (dotfiles) |
 | `-f, --files` | bool | only show files |
 | `-d, --dirs` | bool | only show directories |
+| `-p, --permissions` | bool | show permissions column |
 
 ### Config
 
