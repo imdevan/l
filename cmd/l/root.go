@@ -35,6 +35,7 @@ type rootOptions struct {
 	showHidden  bool
 	filesOnly   bool
 	dirsOnly    bool
+	showPerms   bool
 }
 
 func (o *rootOptions) sortKey() workflow.SortKey {
@@ -62,7 +63,7 @@ func Execute() error {
 	return rootCmd.Execute()
 }
 
-// `l` is an incredibly simple tool with only one command `l`.
+// `l` is an incredibly simple tool with only one command: `l`.
 //
 // `l` lists the contents of a directory in styled table.
 func newRootCmd() *cobra.Command {
@@ -98,6 +99,7 @@ func newRootCmd() *cobra.Command {
 	cmd.Flags().BoolVarP(&opts.showHidden, "all", "a", false, "show hidden files (dotfiles)")
 	cmd.Flags().BoolVarP(&opts.filesOnly, "files", "f", false, "only show files")
 	cmd.Flags().BoolVarP(&opts.dirsOnly, "dirs", "d", false, "only show directories")
+	cmd.Flags().BoolVarP(&opts.showPerms, "permissions", "p", false, "show permissions column")
 
 	// @group: Config
 	cmd.Flags().BoolVarP(&opts.openConfig, "config", "c", false, "open config in editor")
@@ -185,6 +187,10 @@ func runListing(cmd *cobra.Command, opts *rootOptions, args []string) error {
 
 	if cfg.DirectoryPosition != "inline" && opts.sortKey() != workflow.SortType {
 		workflow.SortDirs(entries, cfg.DirectoryPosition == "top")
+	}
+
+	if opts.showPerms {
+		cfg.ShowPermissions = true
 	}
 
 	theme := ui.ThemeFromConfig(cfg)

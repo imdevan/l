@@ -105,13 +105,19 @@ type partialConfig struct {
 	FileColor        *string `toml:"file_color"`
 	TypeColor        *string `toml:"type_color"`
 	PermissionsColor *string `toml:"permissions_color"`
+	PermReadColor    *string `toml:"perm_read_color"`
+	PermWriteColor   *string `toml:"perm_write_color"`
+	PermExecColor    *string `toml:"perm_exec_color"`
+	PermNoneColor    *string `toml:"perm_none_color"`
+	PermDirColor     *string `toml:"perm_dir_color"`
 
 	// Modified age colors
-	ModNewerColor *string `toml:"mod_newer_color"`
-	ModNewColor   *string `toml:"mod_new_color"`
-	ModOldColor   *string `toml:"mod_old_color"`
-	ModOlderColor *string `toml:"mod_older_color"`
-	ModifiedColor *string `toml:"modified_color"`
+	ModNewerColor  *string `toml:"mod_newer_color"`
+	ModNewColor    *string `toml:"mod_new_color"`
+	ModOldColor    *string `toml:"mod_old_color"`
+	ModOlderColor  *string `toml:"mod_older_color"`
+	ModOldestColor *string `toml:"mod_oldest_color"`
+	ModifiedColor  *string `toml:"modified_color"`
 
 	// File size colors
 	FileSm   *string `toml:"file_sm"`
@@ -135,6 +141,7 @@ type partialConfig struct {
 	ShowPermissions                 *bool `toml:"show_permissions"`
 	ShowBottomHeaderForLargeReturns *bool `toml:"show_bottom_header_for_large_returns"`
 	AlwaysShowBottomHeader          *bool `toml:"always_show_bottom_header"`
+	ShowDirSize                     *bool `toml:"show_dir_size"`
 	DirectoryPosition               *string `toml:"directory_position"`
 }
 
@@ -173,11 +180,17 @@ func applyPartial(config *domain.Config, partial *partialConfig) {
 	if partial.FileColor != nil { config.FileColor = *partial.FileColor }
 	if partial.TypeColor != nil { config.TypeColor = *partial.TypeColor }
 	if partial.PermissionsColor != nil { config.PermissionsColor = *partial.PermissionsColor }
+	if partial.PermReadColor != nil { config.PermReadColor = *partial.PermReadColor }
+	if partial.PermWriteColor != nil { config.PermWriteColor = *partial.PermWriteColor }
+	if partial.PermExecColor != nil { config.PermExecColor = *partial.PermExecColor }
+	if partial.PermNoneColor != nil { config.PermNoneColor = *partial.PermNoneColor }
+	if partial.PermDirColor != nil { config.PermDirColor = *partial.PermDirColor }
 
 	if partial.ModNewerColor != nil { config.ModNewerColor = *partial.ModNewerColor }
 	if partial.ModNewColor != nil { config.ModNewColor = *partial.ModNewColor }
 	if partial.ModOldColor != nil { config.ModOldColor = *partial.ModOldColor }
 	if partial.ModOlderColor != nil { config.ModOlderColor = *partial.ModOlderColor }
+	if partial.ModOldestColor != nil { config.ModOldestColor = *partial.ModOldestColor }
 	if partial.ModifiedColor != nil { config.ModifiedColor = *partial.ModifiedColor }
 
 	if partial.FileSm != nil { config.FileSm = *partial.FileSm }
@@ -199,6 +212,7 @@ func applyPartial(config *domain.Config, partial *partialConfig) {
 	if partial.ShowPermissions != nil { config.ShowPermissions = *partial.ShowPermissions }
 	if partial.ShowBottomHeaderForLargeReturns != nil { config.ShowBottomHeaderForLargeReturns = *partial.ShowBottomHeaderForLargeReturns }
 	if partial.AlwaysShowBottomHeader != nil { config.AlwaysShowBottomHeader = *partial.AlwaysShowBottomHeader }
+	if partial.ShowDirSize != nil { config.ShowDirSize = *partial.ShowDirSize }
 	if partial.DirectoryPosition != nil { config.DirectoryPosition = *partial.DirectoryPosition }
 }
 

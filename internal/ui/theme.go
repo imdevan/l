@@ -24,14 +24,21 @@ type Theme struct {
 	// Listing colors
 	DirColor         lipgloss.Color
 	FileColor        lipgloss.Color
-	TypeColor        lipgloss.Color
+	TypeDirColor     lipgloss.Color
+	TypeFileColor    lipgloss.Color
 	PermissionsColor lipgloss.Color
+	PermReadColor    lipgloss.Color
+	PermWriteColor   lipgloss.Color
+	PermExecColor    lipgloss.Color
+	PermNoneColor    lipgloss.Color
+	PermDirColor     lipgloss.Color
 
 	// Modified age colors
-	ModNewer lipgloss.Color
-	ModNew   lipgloss.Color
-	ModOld   lipgloss.Color
-	ModOlder lipgloss.Color
+	ModNewer  lipgloss.Color
+	ModNew    lipgloss.Color
+	ModOld    lipgloss.Color
+	ModOlder  lipgloss.Color
+	ModOldest lipgloss.Color
 
 	// File size colors
 	FileSm lipgloss.Color
@@ -44,17 +51,18 @@ type Theme struct {
 func ThemeFromConfig(cfg domain.Config) Theme {
 	// mod colors: modified_color overrides individual bands when set
 	modOverride := strings.TrimSpace(cfg.ModifiedColor)
-	modNewer := resolveColor(resolveFallback(modOverride, cfg.ModNewerColor), "10")
-	modNew   := resolveColor(resolveFallback(modOverride, cfg.ModNewColor), "02")
-	modOld   := resolveColor(resolveFallback(modOverride, cfg.ModOldColor), "03")
-	modOlder := resolveColor(resolveFallback(modOverride, cfg.ModOlderColor), "04")
+	modNewer  := resolveColor(resolveFallback(modOverride, cfg.ModNewerColor), "10")
+	modNew    := resolveColor(resolveFallback(modOverride, cfg.ModNewColor), "02")
+	modOld    := resolveColor(resolveFallback(modOverride, cfg.ModOldColor), "03")
+	modOlder  := resolveColor(resolveFallback(modOverride, cfg.ModOlderColor), "09")
+	modOldest := resolveColor(resolveFallback(modOverride, cfg.ModOldestColor), "01")
 
 	// size colors: file_size overrides individual bands when set
 	sizeOverride := strings.TrimSpace(cfg.FileSize)
 	fileSm := resolveColor(resolveFallback(sizeOverride, cfg.FileSm), "10")
 	fileMd := resolveColor(resolveFallback(sizeOverride, cfg.FileMd), "02")
 	fileLg := resolveColor(resolveFallback(sizeOverride, cfg.FileLg), "03")
-	fileXl := resolveColor(resolveFallback(sizeOverride, cfg.FileXl), "04")
+	fileXl := resolveColor(resolveFallback(sizeOverride, cfg.FileXl), "01")
 
 	return Theme{
 		Headings:             resolveColor(cfg.Headings, "15"),
@@ -70,13 +78,20 @@ func ThemeFromConfig(cfg domain.Config) Theme {
 
 		DirColor:         resolveColor(resolveFallback(cfg.DirColor, cfg.Primary), "12"),
 		FileColor:        resolveColor(resolveFallback(cfg.FileColor, cfg.Text), "07"),
-		TypeColor:        resolveColor(resolveFallback(cfg.TypeColor, cfg.Muted), "08"),
+		TypeDirColor:     resolveColor(resolveFallback(cfg.TypeColor, cfg.DirColor, cfg.Primary), "12"),
+		TypeFileColor:    resolveColor(resolveFallback(cfg.TypeColor, cfg.FileColor, cfg.Text), "07"),
 		PermissionsColor: resolveColor(resolveFallback(cfg.PermissionsColor, cfg.Muted), "08"),
+		PermReadColor:    resolveColor(resolveFallback(cfg.PermissionsColor, cfg.PermReadColor), "03"),
+		PermWriteColor:   resolveColor(resolveFallback(cfg.PermissionsColor, cfg.PermWriteColor), "01"),
+		PermExecColor:    resolveColor(resolveFallback(cfg.PermissionsColor, cfg.PermExecColor), "02"),
+		PermNoneColor:    resolveColor(resolveFallback(cfg.PermissionsColor, cfg.PermNoneColor), "08"),
+		PermDirColor:     resolveColor(resolveFallback(cfg.PermissionsColor, cfg.PermDirColor), "12"),
 
-		ModNewer: modNewer,
-		ModNew:   modNew,
-		ModOld:   modOld,
-		ModOlder: modOlder,
+		ModNewer:  modNewer,
+		ModNew:    modNew,
+		ModOld:    modOld,
+		ModOlder:  modOlder,
+		ModOldest: modOldest,
 
 		FileSm: fileSm,
 		FileMd: fileMd,

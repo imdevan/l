@@ -24,6 +24,7 @@ type TableOptions struct {
 	ShowPermissions                 bool
 	ShowBottomHeaderForLargeReturns bool
 	AlwaysShowBottomHeader          bool
+	ShowDirSize                     bool
 	EmptyMessage                    string
 	MarginTop                       int
 	MarginLeft                      int
@@ -31,6 +32,9 @@ type TableOptions struct {
 
 // largeReturnThreshold is the row count at which the bottom header appears.
 const largeReturnThreshold = 20
+
+// dirSizeIndicator is rendered for directories when ShowDirSize is false.
+const dirSizeIndicator = "-"
 
 // getTerminalHeight returns the terminal height or -1 if not a terminal. Stubbable for tests.
 var getTerminalHeight = func() int {
@@ -83,6 +87,7 @@ func TableOptionsFromConfig(cfg domain.Config) TableOptions {
 	opts.ShowPermissions = cfg.ShowPermissions
 	opts.ShowBottomHeaderForLargeReturns = cfg.ShowBottomHeaderForLargeReturns
 	opts.AlwaysShowBottomHeader = cfg.AlwaysShowBottomHeader
+	opts.ShowDirSize = cfg.ShowDirSize
 	if strings.TrimSpace(cfg.EmptyDirMessage) != "" {
 		opts.EmptyMessage = cfg.EmptyDirMessage
 	}
@@ -217,19 +222,49 @@ func buildHeaders(opts TableOptions) []string {
 func buildRow(e domain.Entry, theme Theme, opts TableOptions) []string {
 	var row []string
 	if opts.ShowPermissions {
-		row = append(row, lipgloss.NewStyle().Foreground(theme.PermissionsColor).Render(e.Permissions))
+		row = append(row, coloredPermissions(e.Permissions, theme))
 	}
 	row = append(row, coloredName(e, theme, opts.ShowIcons))
 	if opts.ShowType {
-		row = append(row, lipgloss.NewStyle().Foreground(theme.TypeColor).Render(string(e.Type)))
+		typeColor := theme.TypeFileColor
+		if e.IsDir() {
+			typeColor = theme.TypeDirColor
+		}
+		row = append(row, lipgloss.NewStyle().Foreground(typeColor).Render(string(e.Type)))
 	}
 	if opts.ShowSize {
-		row = append(row, coloredSize(e, theme))
+		row = append(row, coloredSize(e, theme, opts.ShowDirSize))
 	}
 	if opts.ShowModified {
 		row = append(row, coloredModified(e.Modified, theme))
 	}
 	return row
+}
+
+func coloredPermissions(perms string, theme Theme) string {
+	s := lipgloss.NewStyle()
+	var out string
+	for i, ch := range perms {
+		var color lipgloss.Color
+		switch {
+		case i == 0:
+			if ch == '-' {
+				color = theme.PermNoneColor
+			} else {
+				color = theme.PermDirColor
+			}
+		case ch == 'r':
+			color = theme.PermReadColor
+		case ch == 'w':
+			color = theme.PermWriteColor
+		case ch == 'x', ch == 's', ch == 'S', ch == 't', ch == 'T':
+			color = theme.PermExecColor
+		default:
+			color = theme.PermNoneColor
+		}
+		out += s.Foreground(color).Render(string(ch))
+	}
+	return out
 }
 
 func coloredName(e domain.Entry, theme Theme, showIcons bool) string {
@@ -256,18 +291,21 @@ func coloredName(e domain.Entry, theme Theme, showIcons bool) string {
 	return nameStyle.Render(e.Name)
 }
 
-func coloredSize(e domain.Entry, theme Theme) string {
+func coloredSize(e domain.Entry, theme Theme, showDirSize bool) string {
 	if e.IsDir() {
+		if !showDirSize {
+			return lipgloss.NewStyle().Foreground(theme.Muted).Render(dirSizeIndicator)
+		}
 		return lipgloss.NewStyle().Foreground(theme.Muted).Render(humanize.Bytes(uint64(e.Size)))
 	}
 	size := e.Size
 	var color lipgloss.Color
 	switch {
-	case size < 10_000:
-		color = theme.FileSm
 	case size < 100_000:
-		color = theme.FileMd
+		color = theme.FileSm
 	case size < 1_000_000:
+		color = theme.FileMd
+	case size < 1_000_000_000:
 		color = theme.FileLg
 	default:
 		color = theme.FileXl
@@ -288,7 +326,7 @@ func coloredModified(t time.Time, theme Theme) string {
 	case age < 28*24*time.Hour:
 		color = theme.ModOlder
 	default:
-		color = theme.Muted
+		color = theme.ModOldest
 	}
 	return lipgloss.NewStyle().Foreground(color).Render(humanize.Time(t))
 }

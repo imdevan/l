@@ -30,11 +30,12 @@ type Config struct {
 	TypeColor string `toml:"type_color"`
 
 	// Modified age colors
-	ModNewerColor string `toml:"mod_newer_color"`
-	ModNewColor   string `toml:"mod_new_color"`
-	ModOldColor   string `toml:"mod_old_color"`
-	ModOlderColor string `toml:"mod_older_color"`
-	ModifiedColor string `toml:"modified_color"` // overrides all mod colors when set
+	ModNewerColor  string `toml:"mod_newer_color"`
+	ModNewColor    string `toml:"mod_new_color"`
+	ModOldColor    string `toml:"mod_old_color"`
+	ModOlderColor  string `toml:"mod_older_color"`
+	ModOldestColor string `toml:"mod_oldest_color"`
+	ModifiedColor  string `toml:"modified_color"` // overrides all mod colors when set
 
 	// File size colors
 	FileSm   string `toml:"file_sm"`
@@ -62,10 +63,16 @@ type Config struct {
 	ShowPermissions               bool `toml:"show_permissions"`
 	ShowBottomHeaderForLargeReturns bool `toml:"show_bottom_header_for_large_returns"`
 	AlwaysShowBottomHeader        bool `toml:"always_show_bottom_header"`
+	ShowDirSize                   bool `toml:"show_dir_size"`
 	DirectoryPosition             string `toml:"directory_position"`
 
 	// Permissions color
-	PermissionsColor string `toml:"permissions_color"`
+	PermissionsColor string `toml:"permissions_color"` // overrides all perm colors when set
+	PermReadColor    string `toml:"perm_read_color"`
+	PermWriteColor   string `toml:"perm_write_color"`
+	PermExecColor    string `toml:"perm_exec_color"`
+	PermNoneColor    string `toml:"perm_none_color"`
+	PermDirColor     string `toml:"perm_dir_color"`
 }
 
 // DefaultConfig returns the default configuration values.
@@ -88,17 +95,18 @@ func DefaultConfig() Config {
 
 		DirColor:  "12",
 		FileColor: "07",
-		TypeColor: "08",
+		TypeColor: "",
 
-		ModNewerColor: "10",
-		ModNewColor:   "02",
-		ModOldColor:   "03",
-		ModOlderColor: "04",
+		ModNewerColor:  "10",
+		ModNewColor:    "02",
+		ModOldColor:    "03",
+		ModOlderColor:  "09",
+		ModOldestColor: "01",
 
 		FileSm: "10",
 		FileMd: "02",
 		FileLg: "03",
-		FileXl: "04",
+		FileXl: "01",
 
 		EmptyDirMessage: "empty dir",
 
@@ -113,7 +121,12 @@ func DefaultConfig() Config {
 		AlwaysShowBottomHeader:          false,
 		DirectoryPosition:               "inline",
 
-		PermissionsColor: "08",
+		PermissionsColor: "",
+		PermReadColor:    "03",
+		PermWriteColor:   "01",
+		PermExecColor:    "02",
+		PermNoneColor:    "08",
+		PermDirColor:     "12",
 	}
 }
 
