@@ -1,6 +1,6 @@
 # l
 
-<img width="1095" height="628" alt="screenshot-2026-06-11_21-59-29" src="https://github.com/user-attachments/assets/d3592213-ce7e-498b-9d95-3853dad6e13a" />
+<img width="961" height="540" alt="l main" src="https://github.com/user-attachments/assets/82785068-de69-4740-b0b7-fa7210d33fd9" />
 
 
 `l` is a fast, styled `ls` replacement with Nerd Font icons, color-coded output, and full TOML configuration.
@@ -77,3 +77,27 @@ See [install](https://devan.gg/l/install/) for more info.
 # Development
 
 See [contributing](https://devan.gg/l/contributing/) for more info.
+
+# Additional Examples
+
+### My current fav
+
+<img width="960" height="540" alt="l fav" src="https://github.com/user-attachments/assets/2c9062ef-dcb6-484d-9642-2bcd9d3c8e98" />
+
+### Mostly borderless with header
+
+<img width="960" height="540" alt="l borderless" src="https://github.com/user-attachments/assets/772f3f97-fc7d-4be2-87d3-c1b36f307c62" />
+
+### Borderless with permissions
+
+<img width="960" height="540" alt="l minimal perms" src="https://github.com/user-attachments/assets/41438e75-a0e5-4111-991c-ce17d648d9f8" />
+
+### Minimal
+
+<img width="961" height="540" alt="l minimal" src="https://github.com/user-attachments/assets/2fbacd76-3764-457d-ae21-76b6c8321eb8" />
+
+
+
+
+
+
