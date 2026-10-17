@@ -160,3 +160,22 @@ Based on version number in `internal/package/package.toml`
   - [x] 9.1.5 render flags in table in order they appear in the code
   - [x] 9.1.6 remove description title just render the description under the group header
   - [x] 9.1.7 description and example should be rendered as multiline markdown copy
+
+
+## Feature 10: fix reponsiveness
+
+breaks on small views with long file names
+
+xxxs: 0-24
+xxs: 24 ()
+xs: 36 (standard left 1/3rd split mon: 45)
+sm: 60 (1/4 width mon: 60)
+md: 90 (half width mon: 91)
+lg: 120 (3/4 width mon: 121)
+xl: 180+ (full width mon: 183)
+
+
+## Feature 11: show git status
+- [ ] 11.1 if a directory listed is a git repo, (contains a .git folder or is in a .git folder)
+- show the status of the folder via color code
+  - [ ] 11.1.1 add color codes to config options
